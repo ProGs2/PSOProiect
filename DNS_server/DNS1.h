@@ -13,9 +13,9 @@
 
 typedef enum { DNS_CLASS_IN = 1 } DNSClass;
 typedef enum { RCODE_NO_ERROR = 0 } RCode;
-typedef enum { DNS_TYPE_A = 1 } DNSType;
 
 ///////////////////////////////STRUCTS///////////////////////////////
+//for hints
 //structura pentru reprezentarea unui label DNS
 typedef struct {
     char label[256];
@@ -38,73 +38,44 @@ typedef struct {
     DNSName dns_name;
     ComboAddress combo_address;
 } DNSHint;
+/////////////////////////////////////////////////////////////
+//
+typedef struct{
 
-typedef struct ResolveRR {
-    DNSName name;
-    uint32_t ttl;
-} ResolveRR;
-
-typedef struct ResolveResult {
-    ResolveRR res[MAX_RR];
-    int res_count;
-    ResolveRR intermediate[MAX_RR];
-    int intermediate_count;
-} ResolveResult;
-
-typedef struct TDNSResolver {
-    ComboAddress root[MAX_HINTS];
-    int root_count;
-    unsigned int max_queries;
-    bool skip_ipv6;
-    unsigned int num_queries;
-    unsigned int num_timeouts;
-    unsigned int num_formerrs;
-    FILE* log_stream;
-    FILE* dot_stream;
-} TDNSResolver;
-
-//types of DNS
-typedef enum{
-    A=1,
-    MX=15
 }DNSType;
+typedef struct{
+    DNSName dns_name;
+    DNSType dns_type;
+    uint32_t ttl;
+    void* data;
+}ResourceRecord; //ResolveRR
 
-typedef struct {
-    // Fill out the DNS header fields based on requirements
-    uint16_t id;
-    uint16_t flags;
-    uint16_t qdcount;
-    uint16_t ancount;
-    uint16_t nscount;
-    uint16_t arcount;
-} DNSHeader;
+typedef struct{
+    ResourceRecord** records;
+    size_t record_count;
+    size_t capacity;
+    uint32_t ttl;
+}RRSet; //RRSet + RRGen
 
-typedef struct {
-    uint8_t data[MAX_PAYLOAD_SIZE];
-    uint16_t size;
-} DNSPayload;
+typedef struct{
+    ResourceRecord** results;
+    ResourceRecord** intermadiate;
+    size_t results_count;
+    size_t intermadiate_count;
+}ResolveResult;
 
-typedef struct {
-    DNSHeader header;
-    DNSPayload payload;
-    uint16_t payloadpos;
-    uint16_t rrpos;
-    uint16_t endofrecord;
-    uint8_t ednsVersion;
-} DNSMessageReader;
+typedef struct{
+    DNSHint* d_root;
+    size_t d_maxqueries;
+    bool d_skipIPv6;
+    FILE* d_dot;
+    FILE* d_log;
+    unsigned int d_numqueries;
+    unsigned int d_numtimeouts;
+    unsigned int d_numformerrs;
+}TDNSResolver;
 
-typedef struct {
-    DNSHeader dh;
-    uint8_t payload[MAX_PAYLOAD_SIZE];
-    uint16_t payloadpos;
-    DNSName qname;
-    DNSType qtype;
-    DNSClass qclass;
-    bool haveEDNS;
-    bool doBit;
-    bool nocompress;
-    RCode ercode;
-} DNSMessageWriter;
+
 
 DNSMessageWriter DNSMessageWriter_init(DNSName* dn, DNSType* dt) {
     DNSMessageWriter dmw;
@@ -133,6 +104,16 @@ DNSName makeDNSName(const char* name) {
         token = strtok(NULL, ".");
     }
     return dns_name;
+}
+
+DNSMessageReader getResponse(struct ComboAddress* server, struct DNSName* dn, struct DNSType* dt, int depth)
+{
+    bool doEDNS = true, doTCP = false;
+    for(int tries = 0; tries < 4; ++tries)
+    {
+        DNSMessageWriter dmw = DNSMessageWriter_init(dn, dt);
+        
+    }
 }
 
 #endif

@@ -12,7 +12,11 @@ int main() {
     };
     printf("Hints initialized succesfully!\n");
 
-    
+    for(int i=0;i<MAX_HINTS;i++)
+    {
+        TDNSResolver* tdns_resolver;
+        
+    }
 
     return 0;
 }
