@@ -11,6 +11,8 @@
 #include <arpa/inet.h>  // For inet_ntop()
 #include <string.h>
 
+#define zoneFilePath "zone.txt"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -109,10 +111,14 @@ void freeTDNSContext(struct TDNSContext* context)
 }
 
 // Looks up IP addresses (A records)
-int TDNSLookupIPs(struct TDNSContext* context, const char* name, int timeoutMsec, int lookupIPv4, int lookupIPv6, struct TDNSIPAddresses** ret)
+int TDNSLookupIPs(struct TDNSContext* context, const char* name, int timeoutMsec, int lookupIPv4, struct TDNSIPAddresses** ret)
 {
-    struct hostent* host;
-    struct in_addr addr;
+    //context --> used for future DNS caching
+    //name --> domain name-ul
+    //timeoutMsec --> timpul pentru lookup, nu este folosit inca
+    //ret --> un pointer care stocheaza rezultatul acestei functii
+    struct hostent* host; // folosita pentru functia gethostbyname()
+    struct in_addr addr; // structura care mentine adrese ipv4
     
     *ret = (struct TDNSIPAddresses*)malloc(sizeof(struct TDNSIPAddresses));
     if (!(*ret)) {
@@ -120,6 +126,12 @@ int TDNSLookupIPs(struct TDNSContext* context, const char* name, int timeoutMsec
     }
 
     // Lookup the domain name using gethostbyname
+    //gethostbyname steps:
+    // -se uita in local cache
+    // -se uita in /etc/hosts
+    // -se uita in /etc/resolv.conf
+    // -in /etc/resolv.conf, trimite querry-uri catre serverul de acolo(pot fi mai multe)
+    // adresa de acolo(127.0.0.53) este adresa de loopback, pointeaza catre un DNSS resolver local 
     host = gethostbyname(name);
     if (!host) {
         free(*ret);
@@ -140,6 +152,61 @@ int TDNSLookupIPs(struct TDNSContext* context, const char* name, int timeoutMsec
 
     return 0; // Success
 }
+
+// Funcția pentru a prelua adresa IP din fișierul ZONE
+int TDNSLookupIPsFromZoneFile(const char* name, struct TDNSIPAddresses** ret) {
+    FILE* file = fopen(zoneFilePath, "r");
+    if (!file) {
+        return 1; // Eroare la deschiderea fișierului
+    }
+
+    *ret = (struct TDNSIPAddresses*)malloc(sizeof(struct TDNSIPAddresses));
+    if (!(*ret)) {
+        fclose(file);
+        return 1; // Eșec la alocarea memoriei
+    }
+
+    char line[256];
+    int found = 0;
+
+    // Parcurgem fișierul linie cu linie
+    while (fgets(line, sizeof(line), file)) {
+        char domain[128];
+        char type[4];
+        char ipStr[INET_ADDRSTRLEN];
+
+        // Citim domeniul, tipul de înregistrare și adresa IP
+        if (sscanf(line, "%127s IN %3s %15s", domain, type, ipStr) == 3) {
+            // Verificăm dacă linia conține o înregistrare de tip "A" și domeniul se potrivește
+            if (strcmp(type, "A") == 0 && strcmp(domain, name) == 0) {
+                struct sockaddr_in* sin = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
+                sin->sin_family = AF_INET;
+
+                if (inet_pton(AF_INET, ipStr, &sin->sin_addr) == 1) {
+                    // Alocăm și stocăm adresa găsită
+                    (*ret)->addresses = (struct sockaddr_storage**)malloc(sizeof(struct sockaddr_storage*));
+                    (*ret)->addresses[0] = (struct sockaddr_storage*)sin;
+                    (*ret)->ttl = 60; // Exemplar TTL
+                    found = 1;
+                    break;
+                } else {
+                    free(sin); // Dacă adresa IP nu este validă
+                }
+            }
+        }
+    }
+
+    fclose(file);
+
+    if (!found) {
+        free(*ret);
+        *ret = NULL;
+        return 1; // Domeniul nu a fost găsit în fișierul ZONE
+    }
+
+    return 0; // Succes
+}
+
 
 // Frees the IP addresses data structure
 void freeTDNSIPAddresses(struct TDNSIPAddresses* ips)

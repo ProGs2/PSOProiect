@@ -15,6 +15,9 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
     socklen_t addr_len = sizeof(*client_addr);
 
     // Receive DNS query
+    //sockfd -->  file descriptor-ul soketului UDP
+    //client_addr --> stocheaza info despre adresa clientului(ipv4)
+    //tdns --> DNS context
     int received = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)client_addr, &addr_len);
     if (received < 0) {
         perror("Failed to receive DNS query");
@@ -37,7 +40,7 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
 
     // Perform the DNS lookup for the domain (IPv4 only)
     struct TDNSIPAddresses* ip_addresses = NULL;
-    if (TDNSLookupIPs(tdns, domain, 1000, 1, 0, &ip_addresses) != 0 || !ip_addresses) {
+    if (TDNSLookupIPs(tdns, domain, 1000, 1, &ip_addresses) != 0 || !ip_addresses) {
         fprintf(stderr, "DNS lookup failed for %s\n", domain);
         return;
     }
@@ -100,7 +103,7 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
 
 int main() {
    // Define hint servers
-    const char* hint_servers[] = {"8.8.8.8", "8.8.4.4"};
+    const char* hint_servers[] = {"8.8.8.8", "8.8.4.4"}; //future use :)
     int nr_hint_servers = 2;
 
     // Initialize DNS context
