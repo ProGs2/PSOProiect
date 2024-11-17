@@ -155,14 +155,17 @@ int TDNSLookupIPs(struct TDNSContext* context, const char* name, int timeoutMsec
 
 // Funcția pentru a prelua adresa IP din fișierul ZONE
 int TDNSLookupIPsFromZoneFile(const char* name, struct TDNSIPAddresses** ret) {
+    printf("ceva1\n");
     FILE* file = fopen(zoneFilePath, "r");
     if (!file) {
+        printf("ceva1\n");
         return 1; // Eroare la deschiderea fișierului
     }
 
     *ret = (struct TDNSIPAddresses*)malloc(sizeof(struct TDNSIPAddresses));
     if (!(*ret)) {
         fclose(file);
+        printf("ceva2\n");
         return 1; // Eșec la alocarea memoriei
     }
 
@@ -178,6 +181,7 @@ int TDNSLookupIPsFromZoneFile(const char* name, struct TDNSIPAddresses** ret) {
         // Citim domeniul, tipul de înregistrare și adresa IP
         if (sscanf(line, "%127s IN %3s %15s", domain, type, ipStr) == 3) {
             // Verificăm dacă linia conține o înregistrare de tip "A" și domeniul se potrivește
+            //printf("%s %s %s\n", domain, type, ipStr);  --> verificare ca luam datele corect din zone
             if (strcmp(type, "A") == 0 && strcmp(domain, name) == 0) {
                 struct sockaddr_in* sin = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
                 sin->sin_family = AF_INET;

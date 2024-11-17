@@ -15,9 +15,6 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
     socklen_t addr_len = sizeof(*client_addr);
 
     // Receive DNS query
-    //sockfd -->  file descriptor-ul soketului UDP
-    //client_addr --> stocheaza info despre adresa clientului(ipv4)
-    //tdns --> DNS context
     int received = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)client_addr, &addr_len);
     if (received < 0) {
         perror("Failed to receive DNS query");
@@ -38,14 +35,20 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
 
     printf("Received query for domain: %s\n", domain);
 
-    // Perform the DNS lookup for the domain (IPv4 only)
+    // First try to resolve from the zone file
     struct TDNSIPAddresses* ip_addresses = NULL;
-    if (TDNSLookupIPs(tdns, domain, 1000, 1, &ip_addresses) != 0 || !ip_addresses) {
-        fprintf(stderr, "DNS lookup failed for %s\n", domain);
-        return;
+    int result = TDNSLookupIPsFromZoneFile(domain, &ip_addresses);
+
+    // If the domain was not found in the zone file, try an external DNS lookup
+    if (result != 0) {
+        printf("Domain not found in zone file. Trying external DNS lookup.\n");
+        if (TDNSLookupIPs(tdns, domain, 1000, 1, &ip_addresses) != 0 || !ip_addresses) {
+            fprintf(stderr, "DNS lookup failed for %s\n", domain);
+            return;
+        }
     }
 
-    // Get the first IP address from the lookup result
+    // Process the IP address if found
     struct sockaddr_in* addr_in = (struct sockaddr_in*)ip_addresses->addresses[0];
     if (!addr_in) {
         fprintf(stderr, "No IP address found for %s\n", domain);
@@ -53,51 +56,40 @@ void handle_dns_query(int sockfd, struct sockaddr_in *client_addr, struct TDNSCo
         return;
     }
 
-    // Convert the IP address to a human-readable format and print it
     char ip_str[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &addr_in->sin_addr, ip_str, sizeof(ip_str));
     printf("Resolved IP address for %s: %s\n", domain, ip_str);
 
-    // Copy transaction ID from the query to the response
-    char response[BUFFER_SIZE] = {0};  // Initialize the buffer to zero to avoid garbage data
+    // Create a DNS response with the resolved IP address
+    char response[BUFFER_SIZE] = {0};
     response[0] = buffer[0];
     response[1] = buffer[1];
-
-    // Set response flags
-    response[2] = 0x81; // QR=1 (response), Opcode=0 (standard query), AA=1, TC=0, RD=1
-    response[3] = 0x80; // RA=1, Z=0, RCode=0 (NOERROR)
-
-    // Set counts for Question and Answer sections
-    response[4] = 0x00; response[5] = 0x01;  // QDCOUNT = 1 (Question count)
-    response[6] = 0x00; response[7] = 0x01;  // ANCOUNT = 1 (Answer count)
-    response[8] = 0x00; response[9] = 0x00;  // NSCOUNT = 0 (Authority count)
-    response[10] = 0x00; response[11] = 0x00; // ARCOUNT = 0 (Additional count)
-
-    // Copy question section to response (12 bytes for header, rest is question)
+    response[2] = 0x81;
+    response[3] = 0x80;
+    response[4] = 0x00; response[5] = 0x01;
+    response[6] = 0x00; response[7] = 0x01;
+    response[8] = 0x00; response[9] = 0x00;
+    response[10] = 0x00; response[11] = 0x00;
     memcpy(response + 12, buffer + 12, received - 12);
     int response_size = received;
-
-    // Add a minimal answer section with an A record
-    response[response_size++] = 0xc0; // Name pointer to the start of the question
+    response[response_size++] = 0xc0;
     response[response_size++] = 0x0c;
-    response[response_size++] = 0x00; // Type (A record)
+    response[response_size++] = 0x00;
     response[response_size++] = 0x01;
-    response[response_size++] = 0x00; // Class (IN)
+    response[response_size++] = 0x00;
     response[response_size++] = 0x01;
     response[response_size++] = 0x00; response[response_size++] = 0x00;
-    response[response_size++] = 0x00; response[response_size++] = 0x3c; // TTL = 60 seconds
-    response[response_size++] = 0x00; response[response_size++] = 0x04;  // Data length for IPv4
-
-    // Insert the IP address returned by TDNSLookupIPs
+    response[response_size++] = 0x00; response[response_size++] = 0x3c;
+    response[response_size++] = 0x00; response[response_size++] = 0x04;
     memcpy(&response[response_size], &addr_in->sin_addr, sizeof(addr_in->sin_addr));
     response_size += sizeof(addr_in->sin_addr);
 
-    // Send only the exact number of bytes in the response
+    // Send response back to the client
     if (sendto(sockfd, response, response_size, 0, (struct sockaddr*)client_addr, addr_len) < 0) {
         perror("Failed to send DNS response");
     }
-    
-    // Free the IP addresses data structure after using it
+
+    // Free memory for IP addresses
     freeTDNSIPAddresses(ip_addresses);
 }
 
