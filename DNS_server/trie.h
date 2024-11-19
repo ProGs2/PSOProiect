@@ -25,7 +25,7 @@ typedef struct SOAMetadata
 typedef struct DNSRecord{
     char* type; //A, MX, SOA, NS
     char* value; //ip address that is stored
-    bool priority; //1 for MX records
+    int priority; //1 for MX records
     int ttl; //time to live in seconds
 };
 typedef struct TrieNode{
@@ -41,7 +41,7 @@ typedef struct TrieNode{
 void error(char* text);
 struct TrieNode* createTrieROOT();
 char** getArrayOfDomainNames();
-struct TrieNode* createBranch(char** domains);
+struct TrieNode* createBranch(char* domains);
 char** extractWordsFromDomain(const char* domain);
 int getCharArraySize(char** array);
 int getNrBranches();
