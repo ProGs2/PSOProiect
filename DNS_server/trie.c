@@ -5,15 +5,15 @@
 #include <time.h>
 
 #define ROOT_LABEL "root"
-#define GET_NR_ZONES_FOR_ROOT_START "./get_nr_zones_for_root_start.sh BINDzones/zones.conf"
-#define GET_ARRAY_OF_DOMAINS "./get_array_of_domains.sh BINDzones/zones.conf"
-#define GET_PATH_TO_ZONE_FILE "./get_path_to_zone_file.sh BINDzones/zones.conf " // + domain names
-#define GET_METADATA_FROM_SOA "./get_metadata_from_soa.sh " // + path_to_file + type
-#define GET_NS_DOMAINS "./get_ns_domains.sh " // + path_to_file + type
-#define GET_TERMINAL_NAMES "./get_terminal_names.sh " // + path_to_file
-#define GET_DNSTYPE "./get_DNStype.sh " // + path_to_file + nr_line 
-#define GET_DNSVALUE "./get_DNSvalue.sh " // + path_to_file + nr_line
-#define GET_DNSTTL "./get_DNSttl.sh " // + path_to_file + nr_line
+#define GET_NR_ZONES_FOR_ROOT_START "./Scripts/get_nr_zones_for_root_start.sh BINDzones/zones.conf"
+#define GET_ARRAY_OF_DOMAINS "./Scripts/get_array_of_domains.sh BINDzones/zones.conf"
+#define GET_PATH_TO_ZONE_FILE "./Scripts/get_path_to_zone_file.sh BINDzones/zones.conf " // + domain names
+#define GET_METADATA_FROM_SOA "./Scripts/get_metadata_from_soa.sh " // + path_to_file + type
+#define GET_NS_DOMAINS "./Scripts/get_ns_domains.sh " // + path_to_file + type
+#define GET_TERMINAL_NAMES "./Scripts/get_terminal_names.sh " // + path_to_file
+#define GET_DNSTYPE "./Scripts/get_DNStype.sh " // + path_to_file + nr_line 
+#define GET_DNSVALUE "./Scripts/get_DNSvalue.sh " // + path_to_file + nr_line
+#define GET_DNSTTL "./Scripts/get_DNSttl.sh " // + path_to_file + nr_line
 
 void error(char* text)
 {
