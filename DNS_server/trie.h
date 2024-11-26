@@ -45,6 +45,7 @@ struct TrieNode* createBranch(char* domains);
 char** extractWordsFromDomain(const char* domain);
 int getCharArraySize(char** array);
 int getNrBranches();
+char* retriveValue(struct TrieNode* root, char* domain_name);
 
 #ifdef __cplusplus
 }

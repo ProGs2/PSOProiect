@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "trie.h"
+#include <time.h>
 
 #define ROOT_LABEL "root"
 #define GET_NR_ZONES_FOR_ROOT_START "./get_nr_zones_for_root_start.sh BINDzones/zones.conf"
@@ -16,20 +17,19 @@
 
 void error(char* text)
 {
-    printf("%s\n", text);
+    printf("Error:%s\n", text);
+    exit(1);
 }
 struct TrieNode* createTrieROOT() {
     struct TrieNode* root = (struct TrieNode*)malloc(sizeof(struct TrieNode));
-    if (!root) {
+    if (root == NULL) {
         error("Memory allocation failed for root node!");
-        exit(1);
     }
 
     root->label = (char*)malloc((strlen(ROOT_LABEL) + 1) * sizeof(char));
-    if (!root->label) {
+    if (root->label == NULL) {
         free(root);
-        error("Memory allocation failed for root label!");
-        exit(1);
+        error("Memory allocation failed for root->label component!");
     }
     strcpy(root->label, ROOT_LABEL);
 
@@ -43,28 +43,25 @@ struct TrieNode* createTrieROOT() {
 
     char buffer[128];
     FILE* fp = popen(GET_NR_ZONES_FOR_ROOT_START, "r");
-    if (!fp) {
-        error("Error opening pipe for GET_NR_ZONES_FOR_ROOT_START!");
+    if (fp == NULL) {
+        error("Error opening pipe for popen() call for GET_NR_ZONES_FOR_ROOT_START");
         free(root->label);
         free(root);
-        exit(1);
     }
 
     if (fgets(buffer, sizeof(buffer), fp) != NULL) {
         if (strcmp(buffer, "error\n") == 0) {
-            error("Error retrieving number of zones!");
             free(root->label);
             free(root);
             pclose(fp);
-            exit(1);
+            error("Error retrieving number of zones!");
         }
         root->nr_childrens = atoi(buffer);
     } else {
-        error("Error reading number of zones from script!");
         free(root->label);
         free(root);
         pclose(fp);
-        exit(1);
+        error("Error reading number of zones from script!");
     }
     pclose(fp);
 
@@ -77,31 +74,34 @@ char** getArrayOfDomainNames()
     FILE* fp;
     fp = popen(GET_NR_ZONES_FOR_ROOT_START, "r");
     if(fp == -1){
-        error("Error popen!");
-        exit(1);
+        error("Error popen() with GET_NR_ZONES_FOR_ROOT_START!");
     }
 
     int nr_zones;
     if (fgets(buffer, sizeof(buffer), fp) != NULL) {
         if(strcmp(buffer, "error") == 0){
             error("Error in geting the number!");
-            exit(1);
         }
         nr_zones = atoi(buffer);
     }
     else
     {
-        error("Error for fgets!");
-        exit(1);
+        error("Error for fgets() in retriving the number of zones!");
     }
-    pclose(fp);
+    int num = pclose(fp);
+    if(num == -1)
+    {
+        error("Error in closing the pipe from popen() call with GET_NR_ZONES_FOR_ROOT_START");
+    }
 
     fp = popen(GET_ARRAY_OF_DOMAINS, "r");
     if(fp == -1){
-        error("Error popen!");
-        exit(1);
+        error("Error in opening a pipe with popen() for GET_ARRAY_OF_DOMAINS!");
     }
-    fgets(buffer, sizeof(buffer), fp);
+    if(fgets(buffer, sizeof(buffer), fp) == NULL)
+    {
+        error("Error in retriving the array of domains from using popen() with GET_ARRAY_OF_DOMAINS");
+    }
 
     char** domains = (char**)malloc(nr_zones * sizeof(char*));
     for(int i=0;i<nr_zones;i++)
@@ -128,30 +128,31 @@ int getNrBranches()
     FILE* fp;
     fp = popen(GET_NR_ZONES_FOR_ROOT_START, "r");
     if(fp == -1){
-        error("Error popen!");
-        exit(1);
+        error("Error in opening the pipe with popen() with GET_NR_ZONES_FOR_ROOT_START!");
     }
 
     int nr_zones;
     if (fgets(buffer, sizeof(buffer), fp) != NULL) {
         if(strcmp(buffer, "error") == 0){
-            error("Error in geting the number!");
-            exit(1);
+            error("Error in geting the number of zones using popen() with GET_NR_ZONES_FOR_ROOT_START!");
         }
         nr_zones = atoi(buffer);
     }
     else
     {
-        error("Error for fgets!");
-        exit(1);
+        error("Error for retriving the number of zones with fgets()!");
     }
-    pclose(fp);
+    int num = pclose(fp);
+    if(num == -1)
+    {
+        error("Error in closing the pipe from popen() with GET_NR_ZONES_FOR_ROOT_START");
+    }
     
     return nr_zones;
 }
 char** extractWordsFromDomain(const char* domain) {
-    if (!domain) {
-        return NULL;
+    if (domain == NULL) {
+        error("The doamin is NULL!");
     }
 
     int word_count = 0;
@@ -163,42 +164,36 @@ char** extractWordsFromDomain(const char* domain) {
     word_count++;
 
     char** words = (char**)malloc((word_count + 1) * sizeof(char*));
-    if (!words) {
-        perror("Memory allocation failed");
-        exit(1);
-    }
 
     int i = 0;
     char* domain_copy = strdup(domain);
     if (!domain_copy) {
-        perror("Memory allocation failed for domain copy");
         free(words);
-        exit(1);
+        error("Memory allocation failed for domain_copy");
     }
 
     char* token = strtok(domain_copy, ".");
     while (token) {
         words[i] = strdup(token);
         if (!words[i]) {
-            perror("Memory allocation failed for word");
+            free(words);
+            free(domain_copy);
+            error("Memory allocation failed for word");
             for (int j = 0; j < i; j++) {
                 free(words[j]);
             }
-            free(words);
-            free(domain_copy);
-            exit(1);
         }
         i++;
         token = strtok(NULL, ".");
     }
     words[i] = NULL;
-
     free(domain_copy);
+
     return words;
 }
 int getCharArraySize(char** array) {
-    if (!array) {
-        return 0;
+    if (array == NULL) {
+        error("The domain is NULL!");
     }
 
     int count = 0;
@@ -209,10 +204,12 @@ int getCharArraySize(char** array) {
 }
 struct TrieNode* createNormalNode(char* name)
 {
+    //perfect:)
     struct TrieNode* node = (struct TrieNode*)malloc(sizeof(struct TrieNode));
 
     node->label = (char*)malloc(strlen(name) * sizeof(char*));
     strcpy(node->label, name);
+
     node->nr_records = 0;
     node->ns = NULL;
     node->records = NULL;
@@ -229,16 +226,22 @@ int getMetadataNumber(char* path_to_zone, char* type)
     strcpy(str, GET_METADATA_FROM_SOA);
     strcat(str, path_to_zone);
     strcat(str, type);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
     fp = popen(str, "r");
     if(fp == -1){
-        error("Error popen!");
-        exit(1);
+        error("Error for popen() for GET_METADATA_FROM_SOA");
     }
 
-    fgets(buffer, sizeof(buffer), fp);
+    if(fgets(buffer, sizeof(buffer), fp) == NULL)
+    {
+        error("Error retriving the metadata number with fgets() for GET_METADATA_FROM_SOA");
+    }
 
-    pclose(fp);
+    int num = pclose(fp);
+    if(num == -1)
+    {
+        error("Error in closing the pipe for GET_METADATA_FROM_SOA");
+    }
 
     return atoi(buffer);
 }
@@ -247,33 +250,29 @@ char* getNSDomain(char* path_to_zone, char* type)
     char buffer[128];
     FILE* fp;
     char* str = (char*)malloc((strlen(path_to_zone) + 2 + strlen(GET_NS_DOMAINS) + 2 + strlen(type) + 1) * sizeof(char));
-    
-    if (str == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
 
     strcpy(str, GET_NS_DOMAINS);
     strcat(str, path_to_zone);
     strcat(str, type);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
 
     fp = popen(str, "r");
     if (fp == NULL) {
-        error("Error popen!");
-        exit(1);
+        error("Error creating a pipe with popen() for GET_NS_DOMAINS!");
     }
 
-    fgets(buffer, sizeof(buffer), fp);
-    pclose(fp);
+    if(fgets(buffer, sizeof(buffer), fp) == NULL)
+    {
+        error("Error getting the ns domains with fgets()!");
+    }
+    if(pclose(fp) == -1)
+    {
+        error("Error closing the pipe for popen() with GET_NS_DOMAINS");
+    }
 
-    buffer[strcspn(buffer, "\n")] = '\0';
+    buffer[strcspn(buffer, "\n")] = '\0'; //trick
 
     char* result = (char*)malloc(strlen(buffer) + 1);
-    if (result == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
     strcpy(result, buffer);
 
     return result;
@@ -284,9 +283,8 @@ struct TrieNode* createItselfNode(char* name, char* path_to_zone)
 
     node->label = (char*)malloc(strlen(name) * sizeof(char*));
     strcpy(node->label, name);
-    node->nr_records = 0;
 
-    node->nr_childrens = 0;
+    node->nr_records = 0;
     node->nr_childrens = 0;
     node->records = NULL;
     
@@ -294,15 +292,16 @@ struct TrieNode* createItselfNode(char* name, char* path_to_zone)
     node->soa->serial_number = getMetadataNumber(path_to_zone, " serial");
     node->soa->refresh_time = getMetadataNumber(path_to_zone, " refresh");
     node->soa->retry_time = getMetadataNumber(path_to_zone, " retry");
-    node->soa->retry_time = getMetadataNumber(path_to_zone, " expire");
-    node->soa->retry_time = getMetadataNumber(path_to_zone, " minimum_ttl");
+    node->soa->expire_time= getMetadataNumber(path_to_zone, " expire");
+    node->soa->minimum_ttl = getMetadataNumber(path_to_zone, " minimum_ttl");
 
     node->ns = (struct NSQuerys*)malloc(sizeof(struct NSQuerys));
     node->ns->domain1 = (char*)malloc(32 * sizeof(char));
-    node->ns->domain1 = (char*)malloc(32 * sizeof(char));
+    node->ns->domain2 = (char*)malloc(32 * sizeof(char));
     node->ns->domain1 = getNSDomain(path_to_zone, " ns1");
-    node->ns->domain1 = getNSDomain(path_to_zone, " ns2");
+    node->ns->domain2 = getNSDomain(path_to_zone, " ns2");
     //printf("%s\n", node->ns->domain1);
+    //node->nr_records++;
 
     return node;
 }
@@ -311,11 +310,6 @@ char** getTerminalNames(char* path_to_zone)
     char buffer[128];
     FILE* fp;
     char* str = (char*)malloc((strlen(path_to_zone) + 2 + strlen(GET_TERMINAL_NAMES) + 2) * sizeof(char));
-    
-    if (str == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
 
     strcpy(str, GET_TERMINAL_NAMES);
     strcat(str, path_to_zone);
@@ -323,8 +317,7 @@ char** getTerminalNames(char* path_to_zone)
 
     fp = popen(str, "r");
     if (fp == NULL) {
-        error("Error popen!");
-        exit(1);
+        error("Error popen for GET_TERMINAL_NAMES!");
     }
 
     fgets(buffer, sizeof(buffer), fp);
@@ -425,6 +418,7 @@ struct TrieNode* createSpecialNode(char* path_to_zone, int nr_line_in_zone, char
     node->records->type = getDNSTypeFromZoneFile(path_to_zone, string);
     node->records->value = getDNSValueFromZoneFile(path_to_zone, string);
     node->records->ttl = getDNSTtlValueFromZoneFile(path_to_zone, " 1");
+    node->nr_records++;
 
     return node;
 }
@@ -433,6 +427,8 @@ struct TrieNode* createTerminalNode(char* name, char* domain)
     //find the file path to the zone file
     struct TrieNode* terminalNode = (struct TrieNode*)malloc(sizeof(struct TrieNode));
     terminalNode->nr_childrens = 0;
+    terminalNode->nr_records = 0;
+    terminalNode->records = NULL;
 
     terminalNode->label = (char*)malloc((strlen(name) + 1) * sizeof(char));
     strcpy(terminalNode->label, name);
@@ -443,10 +439,6 @@ struct TrieNode* createTerminalNode(char* name, char* domain)
     strcpy(str, GET_PATH_TO_ZONE_FILE);
     strcat(str, domain);
     fp = popen(str, "r");
-    if(fp == -1){
-        error("Error popen!");
-        exit(1);
-    }
 
     fgets(buffer, sizeof(buffer), fp);
     printf("The path file of the zone: %s\n", buffer);
@@ -516,7 +508,54 @@ struct TrieNode* createBranch(char* domain)
     //}
     return vectorOfNodes[0];
 }
-char* searchInTrie(struct TrieNode* root, char* domain_name)
+char* retriveValue(struct TrieNode* root, char* domain_name)
 {
-    
+    char** words = extractWordsFromDomain(domain_name);
+    int nr_words = getCharArraySize(words) - 1;
+    for(int i=0;i<nr_words + 1;i++)
+    {
+        printf("-->%s<--\n", words[i]);
+    }
+    struct TrieNode* search_node = (struct TrieNode*)malloc(sizeof(struct TrieNode*));
+    search_node = root;
+    while(1)
+    {
+        for(int i=0;i<search_node->nr_childrens;i++)
+        {
+            printf("%s are %d copii\n", search_node->label, search_node->nr_childrens);
+            printf("%s == %s\n", search_node->childrens[i]->label, words[nr_words]);
+            printf("%d\n", nr_words);
+            if(strcmp(search_node->childrens[i]->label, words[nr_words]) == 0){
+                nr_words--;
+                printf("%s == %s\n", search_node->childrens[i]->label, words[nr_words + 1]);
+                search_node = search_node->childrens[i];
+                i = -1; //reset
+                for(int j=0;j<search_node->nr_records;j++)
+                {
+                    //printf("%s\n", search_node->records[i].value);
+                    if(search_node->records[j].value != NULL && nr_words == -1)
+                    {
+                        printf("%s\n", search_node->records[j].value);
+                        return search_node->records[j].value;
+                    }
+                }
+                if(nr_words == -1 ){
+                    search_node = search_node->childrens[0];
+                    printf("Itself node found!\n");
+                    printf("%d %s\n", search_node->nr_records, search_node->label);
+                    srand(time(0));
+                    int rand_nr = rand() % 2;
+                    //printf("%d\n", rand_nr);
+                    if(rand_nr == 0)
+                    {
+                        return retriveValue(root, search_node->ns->domain1);
+                    }
+                    else{
+                        return retriveValue(root, search_node->ns->domain2);
+                    }
+                }
+            }
+        }
+        return "Failed to find the value!";
+    }
 }

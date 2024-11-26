@@ -17,7 +17,7 @@ void printTrie(struct TrieNode* node, int level) {
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     //The creation of the DNS trie structure;
     struct TrieNode* root = createTrieROOT();
@@ -34,6 +34,9 @@ int main()
     
     printf("Structura Trie:\n");
     printTrie(root, 0);
+
+    char* value = retriveValue(root, argv[1]);
+    printf("%s\n", value);
 
     return 0;
 }
