@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "trie.h"
+#include "cache.h"
 
 void printTrie(struct TrieNode* node, int level) {
     if (!node) return;
@@ -35,8 +36,19 @@ int main(int argc, char* argv[])
     printf("Structura Trie:\n");
     printTrie(root, 0);
 
-    char* value = retriveValue(root, argv[1]);
-    printf("%s\n", value);
+    //initializare cache
+    struct DNSCache* cache = initializeDNSCache();
+    struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
+    while(1)
+    {
+        cache_entry = retriveValue(root, argv[1]);
+        printf("%s\n", cache_entry->record_value);
+        //addCacheEntry(cache, cache_entry);
+        return 0;
+    }
+
+    //free(cache);
+    free(cache_entry);
 
     return 0;
 }

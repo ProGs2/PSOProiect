@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g   # Enable all warnings and debugging symbols
-SRC = mainDNS.c trie.c
+SRC = mainDNS.c trie.c cache.c
 OBJ = $(SRC:.c=.o)   # Converts .c files to .o object files
 OUT = myprogram      # Output binary name
 

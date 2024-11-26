@@ -3,6 +3,7 @@
 #include <string.h>
 #include "trie.h"
 #include <time.h>
+#include "cache.h"
 
 #define ROOT_LABEL "root"
 #define GET_NR_ZONES_FOR_ROOT_START "./Scripts/get_nr_zones_for_root_start.sh BINDzones/zones.conf"
@@ -508,7 +509,7 @@ struct TrieNode* createBranch(char* domain)
     //}
     return vectorOfNodes[0];
 }
-char* retriveValue(struct TrieNode* root, char* domain_name)
+struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name)
 {
     char** words = extractWordsFromDomain(domain_name);
     int nr_words = getCharArraySize(words) - 1;
@@ -536,7 +537,15 @@ char* retriveValue(struct TrieNode* root, char* domain_name)
                     if(search_node->records[j].value != NULL && nr_words == -1)
                     {
                         printf("%s\n", search_node->records[j].value);
-                        return search_node->records[j].value;
+                        struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
+                        cache_entry = createCacheEntry();
+                        cache_entry->domain_name = (char*)malloc((strlen(domain_name)  +1) * sizeof(char));
+                        strcpy(cache_entry->domain_name, domain_name);
+                        cache_entry->record_value = (char*)malloc((strlen(search_node->records[j].value) + 1) * sizeof(char));
+                        strcpy(cache_entry->record_value, search_node->records[j].value);
+                        cache_entry->timestamp = time(NULL);
+                        cache_entry->ttl = TTL_VALUE_CACHE;
+                        return cache_entry;
                     }
                 }
                 if(nr_words == -1 ){

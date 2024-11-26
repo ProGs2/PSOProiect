@@ -13,7 +13,7 @@ extern "C" {
 typedef struct NSQuerys{
     char* domain1;
     char* domain2;
-};
+}NSQuerys;
 typedef struct SOAMetadata
 {
     long long serial_number;
@@ -21,13 +21,13 @@ typedef struct SOAMetadata
     int retry_time;
     long long expire_time;
     int minimum_ttl;
-};
+}SOAMetadata;
 typedef struct DNSRecord{
     char* type; //A, MX, SOA, NS
     char* value; //ip address that is stored
     int priority; //1 for MX records
     int ttl; //time to live in seconds
-};
+}DNSRecord;
 typedef struct TrieNode{
     char* label;
     struct TrieNode* childrens[NR_MAX_CHILDREN]; //array of children
@@ -36,7 +36,7 @@ typedef struct TrieNode{
     struct SOAMetadata* soa;
     struct NSQuerys* ns;
     int  nr_childrens;
-};
+}TrieNode;
 
 void error(char* text);
 struct TrieNode* createTrieROOT();
@@ -45,7 +45,7 @@ struct TrieNode* createBranch(char* domains);
 char** extractWordsFromDomain(const char* domain);
 int getCharArraySize(char** array);
 int getNrBranches();
-char* retriveValue(struct TrieNode* root, char* domain_name);
+struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name);
 
 #ifdef __cplusplus
 }
