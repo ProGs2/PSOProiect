@@ -41,10 +41,9 @@ int main(int argc, char* argv[])
     struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
     while(1)
     {
-        cache_entry = retriveValue(root, argv[1]);
+        cache_entry = retriveValue(root, argv[1], cache);
         printf("%s\n", cache_entry->record_value);
-        //addCacheEntry(cache, cache_entry);
-        return 0;
+        cache = addCacheEntry(cache, cache_entry);
     }
 
     //free(cache);

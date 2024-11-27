@@ -31,36 +31,29 @@ unsigned int hash_function(const char* domain_name) {
     return hash % MAX_CACHE;
 }
 
-
-void addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry)
+struct DNSCache* addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry)
 {
     unsigned int hash_index = hash_function(cache_entry->domain_name);
-    struct CacheEntry* entry = createCacheEntry();
-    entry = cache->buckets[hash_index];
-    //printf("%s\n", (*cache->buckets[hash_index]).domain_name);
-    if(cache->buckets[hash_index]->domain_name == NULL)
-    {
-        printf("ceva\n");
-    }
-    else{printf("altceva\n");}
-    printf("ceva\n");
+    struct CacheEntry* entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry));
 
     while(1)
     {
-        if(entry->domain_name != NULL && cache_entry->domain_name != NULL && strcmp(entry->domain_name, cache_entry->domain_name) == 0)
+        cache = DNSCacheCleanUp(cache);
+        if(entry != NULL && entry->domain_name != NULL && cache_entry->domain_name != NULL && strcmp(entry->domain_name, cache_entry->domain_name) == 0)
         {
             printf("Entry already in the DNSCache!\n");
             (*cache->buckets[hash_index]).ttl = cache_entry->ttl;
             (*cache->buckets[hash_index]).timestamp = cache_entry->timestamp;
             free(entry);
-            return;
+            return cache;
         }
         else
         {
             printf("Entry inserted succesfuly!\n");
-            ///cache->buckets[hash_index] = cache_entry;
+            cache->buckets[hash_index] = cache_entry;
+
             free(entry);
-            return;
+            return cache;
         }
     }
 }
@@ -68,8 +61,14 @@ void addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry)
 char* lookupDNSCache(struct DNSCache* cache, char* domain_name)
 {
     unsigned int hash_index = hash_function(domain_name);
-
-    return (*cache->buckets[hash_index]).record_value;
+    if(cache->buckets[hash_index] != NULL)
+    {
+        return cache->buckets[hash_index]->record_value;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 struct DNSCache* DNSCacheCleanUp(struct DNSCache* cache)
@@ -77,9 +76,10 @@ struct DNSCache* DNSCacheCleanUp(struct DNSCache* cache)
     time_t now = time(NULL);
     for(int i=0;i<MAX_CACHE;i++)
     {
-        if((*cache->buckets[i]).ttl <= now - (*cache->buckets[i]).timestamp)
+        if(cache->buckets[i] != NULL && cache->buckets[i]->ttl <= now - cache->buckets[i]->timestamp)
         {
             free(cache->buckets[i]);
         }
     }
+    return cache;
 }

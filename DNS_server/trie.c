@@ -509,7 +509,7 @@ struct TrieNode* createBranch(char* domain)
     //}
     return vectorOfNodes[0];
 }
-struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name)
+struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct DNSCache* cache)
 {
     char** words = extractWordsFromDomain(domain_name);
     int nr_words = getCharArraySize(words) - 1;
@@ -517,6 +517,22 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name)
     {
         printf("-->%s<--\n", words[i]);
     }
+
+    char* searchDNSCache = lookupDNSCache(cache, domain_name);
+    if(searchDNSCache != NULL)
+    {
+        printf("Gasit in DNSCache!\n");
+        struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
+        cache_entry = createCacheEntry();
+        cache_entry->domain_name = (char*)malloc((strlen(domain_name)  +1) * sizeof(char));
+        strcpy(cache_entry->domain_name, domain_name);
+        cache_entry->record_value = (char*)malloc((strlen(searchDNSCache) + 1) * sizeof(char));
+        strcpy(cache_entry->record_value, searchDNSCache);
+        cache_entry->timestamp = time(NULL);
+        cache_entry->ttl = TTL_VALUE_CACHE;
+        return cache_entry;
+    }
+
     struct TrieNode* search_node = (struct TrieNode*)malloc(sizeof(struct TrieNode*));
     search_node = root;
     while(1)
@@ -557,10 +573,10 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name)
                     //printf("%d\n", rand_nr);
                     if(rand_nr == 0)
                     {
-                        return retriveValue(root, search_node->ns->domain1);
+                        return retriveValue(root, search_node->ns->domain1, cache);
                     }
                     else{
-                        return retriveValue(root, search_node->ns->domain2);
+                        return retriveValue(root, search_node->ns->domain2, cache);
                     }
                 }
             }

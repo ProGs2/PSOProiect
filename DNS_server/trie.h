@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include "cache.h"
 
 #define NR_MAX_CHILDREN 32 
 
@@ -45,7 +46,7 @@ struct TrieNode* createBranch(char* domains);
 char** extractWordsFromDomain(const char* domain);
 int getCharArraySize(char** array);
 int getNrBranches();
-struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name);
+struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct DNSCache* cache);
 
 #ifdef __cplusplus
 }

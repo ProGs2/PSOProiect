@@ -22,7 +22,7 @@ typedef struct DNSCache{
 struct CacheEntry* createCacheEntry();
 struct DNSCache* initializeDNSCache();
 unsigned int hash_function(const char* domain_name);
-void addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry);
+struct DNSCache* addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry);
 char* lookupDNSCache(struct DNSCache* cache, char* domain_name);
 struct DNSCache* DNSCacheCleanUp(struct DNSCache* cache);
 
