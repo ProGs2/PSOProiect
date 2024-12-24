@@ -1,0 +1,185 @@
+[2024-12-24 17:24:15] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 17:24:15] [INFO] Server is listening on port 8081
+[2024-12-24 17:24:47] [INFO] Accepted connection from client socket: 6
+[2024-12-24 17:24:47] [INFO] Handling client socket: 6
+[2024-12-24 17:24:47] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 17:24:47] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 17:24:47] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:24:47] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-24 17:24:47] [INFO] Closed connection for client socket: 6
+[2024-12-24 17:25:03] [INFO] Accepted connection from client socket: 7
+[2024-12-24 17:25:03] [INFO] Handling client socket: 7
+[2024-12-24 17:25:03] [INFO] Received query from client 7: mydomain.org
+[2024-12-24 17:25:03] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 17:25:03] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:25:03] [INFO] Sent response to client 7: 192.168.1.1
+
+[2024-12-24 17:25:03] [INFO] Closed connection for client socket: 7
+[2024-12-24 17:25:13] [INFO] Accepted connection from client socket: 6
+[2024-12-24 17:25:13] [INFO] Handling client socket: 6
+[2024-12-24 17:25:13] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 17:25:13] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.2
+
+[2024-12-24 17:25:13] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:25:13] [INFO] Sent response to client 6: 192.168.1.2
+
+[2024-12-24 17:25:13] [INFO] Closed connection for client socket: 6
+[2024-12-24 17:43:18] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 17:43:18] [INFO] Server is listening on port 8081
+[2024-12-24 17:43:33] [INFO] Accepted connection from client socket: 6
+[2024-12-24 17:43:33] [INFO] Handling client socket: 6
+[2024-12-24 17:43:33] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 17:43:33] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 17:43:33] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:43:33] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-24 17:43:33] [INFO] Closed connection for client socket: 6
+[2024-12-24 17:43:57] [INFO] Accepted connection from client socket: 7
+[2024-12-24 17:43:57] [INFO] Handling client socket: 7
+[2024-12-24 17:43:57] [INFO] Received query from client 7: mydomain.org
+[2024-12-24 17:43:57] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.2
+
+[2024-12-24 17:43:57] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:43:57] [INFO] Sent response to client 7: 192.168.1.2
+
+[2024-12-24 17:43:57] [INFO] Closed connection for client socket: 7
+[2024-12-24 17:44:02] [INFO] Accepted connection from client socket: 6
+[2024-12-24 17:44:02] [INFO] Handling client socket: 6
+[2024-12-24 17:44:02] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 17:44:02] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.2
+
+[2024-12-24 17:44:02] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 17:44:02] [INFO] Sent response to client 6: 192.168.1.2
+
+[2024-12-24 17:44:02] [INFO] Closed connection for client socket: 6
+[2024-12-24 17:50:38] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 17:50:38] [INFO] Server is listening on port 8081
+[2024-12-24 17:52:30] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 17:52:30] [INFO] Server is listening on port 8081
+[2024-12-24 17:52:45] [INFO] Accepted connection from client socket: 6
+[2024-12-24 17:52:45] [INFO] Handling client socket: 6
+[2024-12-24 17:52:45] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 17:52:45] [INFO] Domain not found for query: mydomain.org
+[2024-12-24 17:52:45] [INFO] Sent response to client 6: Record not found
+[2024-12-24 17:52:45] [INFO] Closed connection for client socket: 6
+[2024-12-24 17:52:50] [INFO] Accepted connection from client socket: 7
+[2024-12-24 17:52:50] [INFO] Handling client socket: 7
+[2024-12-24 17:52:50] [INFO] Received query from client 7: google.ro
+[2024-12-24 17:52:50] [INFO] Domain not found for query: google.ro
+[2024-12-24 17:52:50] [INFO] Sent response to client 7: Record not found
+[2024-12-24 17:52:50] [INFO] Closed connection for client socket: 7
+[2024-12-24 17:56:27] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 17:56:27] [INFO] Server is listening on port 8081
+[2024-12-24 18:02:41] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 18:02:41] [INFO] Server is listening on port 8081
+[2024-12-24 18:05:15] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 18:05:15] [INFO] Server is listening on port 8081
+[2024-12-24 18:09:10] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 18:09:10] [INFO] Server is listening on port 8081
+[2024-12-24 18:09:23] [INFO] Accepted connection from client socket: 6
+[2024-12-24 18:09:23] [INFO] Handling client socket: 6
+[2024-12-24 18:09:23] [INFO] Received query from client 6: google.ro
+[2024-12-24 18:09:23] [INFO] Cache/Trie hit for query google.ro -> 192.155.1.2
+
+[2024-12-24 18:09:23] [INFO] Added query result to cache: google.ro
+[2024-12-24 18:09:23] [INFO] Sent response to client 6: 192.155.1.2
+
+[2024-12-24 18:09:23] [INFO] Closed connection for client socket: 6
+[2024-12-24 18:09:25] [INFO] Accepted connection from client socket: 7
+[2024-12-24 18:09:25] [INFO] Handling client socket: 7
+[2024-12-24 18:09:25] [INFO] Received query from client 7: google.ro
+[2024-12-24 18:09:25] [INFO] Cache/Trie hit for query google.ro -> 192.150.1.1
+
+[2024-12-24 18:09:25] [INFO] Added query result to cache: google.ro
+[2024-12-24 18:09:25] [INFO] Sent response to client 7: 192.150.1.1
+
+[2024-12-24 18:09:25] [INFO] Closed connection for client socket: 7
+[2024-12-24 18:09:26] [INFO] Accepted connection from client socket: 6
+[2024-12-24 18:09:26] [INFO] Handling client socket: 6
+[2024-12-24 18:09:26] [INFO] Received query from client 6: google.ro
+[2024-12-24 18:09:26] [INFO] Cache/Trie hit for query google.ro -> 192.150.1.1
+
+[2024-12-24 18:09:26] [INFO] Added query result to cache: google.ro
+[2024-12-24 18:09:26] [INFO] Sent response to client 6: 192.150.1.1
+
+[2024-12-24 18:09:26] [INFO] Closed connection for client socket: 6
+[2024-12-24 20:08:55] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 20:08:55] [INFO] Server is listening on port 8081
+[2024-12-24 20:08:58] [INFO] Accepted connection from client socket: 6
+[2024-12-24 20:08:58] [INFO] Handling client socket: 6
+[2024-12-24 20:08:58] [INFO] Received query from client 6: google.ro
+[2024-12-24 20:08:58] [INFO] Cache/Trie hit for query google.ro -> 192.155.1.2
+
+[2024-12-24 20:08:58] [INFO] Added query result to cache: google.ro
+[2024-12-24 20:08:58] [INFO] Sent response to client 6: 192.155.1.2
+
+[2024-12-24 20:08:58] [INFO] Closed connection for client socket: 6
+[2024-12-24 20:16:02] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-24 20:16:02] [INFO] Server is listening on port 8081
+[2024-12-24 20:16:03] [INFO] Accepted connection from client socket: 6
+[2024-12-24 20:16:03] [INFO] Handling client socket: 6
+[2024-12-24 20:16:03] [INFO] Received query from client 6: google.ro
+[2024-12-24 20:16:03] [INFO] Cache/Trie hit for query google.ro -> 192.150.1.1
+
+[2024-12-24 20:16:03] [INFO] Added query result to cache: google.ro
+[2024-12-24 20:16:03] [INFO] Sent response to client 6: 192.150.1.1
+
+[2024-12-24 20:16:03] [INFO] Closed connection for client socket: 6
+[2024-12-24 20:16:05] [INFO] Accepted connection from client socket: 7
+[2024-12-24 20:16:05] [INFO] Handling client socket: 7
+[2024-12-24 20:16:05] [INFO] Received query from client 7: mydomain.org
+[2024-12-24 20:16:05] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.2
+
+[2024-12-24 20:16:05] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:05] [INFO] Sent response to client 7: 192.168.1.2
+
+[2024-12-24 20:16:05] [INFO] Closed connection for client socket: 7
+[2024-12-24 20:16:11] [INFO] Accepted connection from client socket: 6
+[2024-12-24 20:16:11] [INFO] Handling client socket: 6
+[2024-12-24 20:16:11] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 20:16:11] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 20:16:11] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:11] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-24 20:16:11] [INFO] Closed connection for client socket: 6
+[2024-12-24 20:16:12] [INFO] Accepted connection from client socket: 7
+[2024-12-24 20:16:12] [INFO] Handling client socket: 7
+[2024-12-24 20:16:12] [INFO] Received query from client 7: mydomain.org
+[2024-12-24 20:16:12] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 20:16:12] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:12] [INFO] Sent response to client 7: 192.168.1.1
+
+[2024-12-24 20:16:12] [INFO] Closed connection for client socket: 7
+[2024-12-24 20:16:13] [INFO] Accepted connection from client socket: 6
+[2024-12-24 20:16:13] [INFO] Handling client socket: 6
+[2024-12-24 20:16:13] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 20:16:13] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 20:16:13] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:13] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-24 20:16:13] [INFO] Closed connection for client socket: 6
+[2024-12-24 20:16:14] [INFO] Accepted connection from client socket: 7
+[2024-12-24 20:16:14] [INFO] Handling client socket: 7
+[2024-12-24 20:16:14] [INFO] Received query from client 7: mydomain.org
+[2024-12-24 20:16:14] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2024-12-24 20:16:14] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:14] [INFO] Sent response to client 7: 192.168.1.1
+
+[2024-12-24 20:16:14] [INFO] Closed connection for client socket: 7
+[2024-12-24 20:16:15] [INFO] Accepted connection from client socket: 6
+[2024-12-24 20:16:15] [INFO] Handling client socket: 6
+[2024-12-24 20:16:15] [INFO] Received query from client 6: mydomain.org
+[2024-12-24 20:16:15] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.2
+
+[2024-12-24 20:16:15] [INFO] Added query result to cache: mydomain.org
+[2024-12-24 20:16:15] [INFO] Sent response to client 6: 192.168.1.2
+
+[2024-12-24 20:16:15] [INFO] Closed connection for client socket: 6

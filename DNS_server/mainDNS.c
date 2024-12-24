@@ -1,8 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 #include "trie.h"
 #include "cache.h"
+#include "thread.h"
+#include "logger.h"
+#include <signal.h>
+
+typedef struct {
+    struct TrieNode* root;
+    struct DNSCache* cache;
+    struct Logger* logger;
+} ServerContext;
+
+typedef struct {
+    int client_socket;
+    ServerContext* context;
+} ClientTask;
+
+#define PORT 8081
+#define BUFFER_SIZE 1024
 
 void printTrie(struct TrieNode* node, int level) {
     if (!node) return;
@@ -18,36 +37,157 @@ void printTrie(struct TrieNode* node, int level) {
     }
 }
 
-int main(int argc, char* argv[])
-{
-    //The creation of the DNS trie structure;
+// Function to handle client requests
+void handleClient(void* arg) {
+    ClientTask* task = (ClientTask*)arg; // Cast argument to ClientTask*
+    int client_socket = task->client_socket;
+    ServerContext* context = task->context;
+    free(task); // Free the dynamically allocated memory for the task
+
+    logMessage(context->logger, "INFO", "Handling client socket: %d", client_socket);
+
+    char buffer[BUFFER_SIZE] = {0};
+    int valread = read(client_socket, buffer, BUFFER_SIZE);
+
+    if (valread <= 0) {
+        logMessage(context->logger, "ERROR", "Failed to read from client socket: %d", client_socket);
+        close(client_socket);
+        return;
+    }
+
+    buffer[valread] = '\0';
+    logMessage(context->logger, "INFO", "Received query from client %d: %s", client_socket, buffer);
+
+    // Lookup in trie and cache
+    struct CacheEntry* cache_entry = retriveValue(context->root, buffer, context->cache);
+
+    if (cache_entry) {
+        logMessage(context->logger, "INFO", "Cache/Trie hit for query %s -> %s", buffer, cache_entry->record_value);
+    } else {
+        logMessage(context->logger, "INFO", "Domain not found for query: %s", buffer);
+    }
+
+    // Add to cache if not already cached
+    if (cache_entry) {
+        addCacheEntry(context->cache, cache_entry);
+        logMessage(context->logger, "INFO", "Added query result to cache: %s", buffer);
+    }
+
+    // Prepare the response
+    char* response;
+    if (cache_entry && cache_entry->record_value) {
+        response = cache_entry->record_value;
+    } else {
+        response = "Record not found";
+    }
+
+    // Send the response back to the client
+    if (send(client_socket, response, strlen(response), 0) < 0) {
+        logMessage(context->logger, "ERROR", "Failed to send response to client socket: %d", client_socket);
+    } else {
+        logMessage(context->logger, "INFO", "Sent response to client %d: %s", client_socket, response);
+    }
+
+    close(client_socket);
+    logMessage(context->logger, "INFO", "Closed connection for client socket: %d", client_socket);
+}
+
+int main() {
+    // Initialize the trie
     struct TrieNode* root = createTrieROOT();
-
+    // Populate trie with domain data
     char** domains = getArrayOfDomainNames();
-
     int nr_branches = getNrBranches();
-    for(int i=0;i<nr_branches;i++)
-    {
+    for (int i = 0; i < nr_branches; i++) {
         struct TrieNode* branch = createBranch(domains[i]);
-        //printf("%s\n", branch->childrens[0]->childrens[0]->label);
         root->childrens[i] = branch;
     }
-    
-    printf("Structura Trie:\n");
+
+    printf("Trie Structure:\n");
     printTrie(root, 0);
 
-    //initializare cache
+    // Initialize cache
     struct DNSCache* cache = initializeDNSCache();
-    struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
-    while(1)
-    {
-        cache_entry = retriveValue(root, argv[1], cache);
-        printf("%s\n", cache_entry->record_value);
-        cache = addCacheEntry(cache, cache_entry);
+
+    Logger* logger = initLogger("dns_server.log");
+    if (!logger) {
+        fprintf(stderr, "Failed to initialize logger. Exiting...\n");
+        return EXIT_FAILURE;
     }
 
-    //free(cache);
-    free(cache_entry);
+    // Create shared server context
+    ServerContext context = { .root = root, .cache = cache, .logger = logger };
 
+    // Initialize thread pool
+    ThreadPool* pool = initThreadPool(5);
+    logMessage(logger, "INFO", "DNS server initialized. Listening on port %d", PORT);
+
+    // Set up the server socket
+    int server_fd;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        logMessage(logger, "ERROR", "Socket creation failed");
+        perror("Socket failed");
+        return EXIT_FAILURE;
+    }
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+
+    if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+        logMessage(logger, "ERROR", "Bind failed");
+        perror("Bind failed");
+        close(server_fd);
+        return EXIT_FAILURE;
+    }
+
+    if (listen(server_fd, 3) < 0) {
+        logMessage(logger, "ERROR", "Listen failed");
+        perror("Listen failed");
+        close(server_fd);
+        return EXIT_FAILURE;
+    }
+
+    logMessage(logger, "INFO", "Server is listening on port %d", PORT);
+
+    while (1) {
+        int new_socket = accept(server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+        if (new_socket < 0) {
+            logMessage(logger, "ERROR", "Accept failed");
+            perror("Accept failed");
+            continue;
+        }
+
+        logMessage(logger, "INFO", "Accepted connection from client socket: %d", new_socket);
+
+        // Allocate memory for the ClientTask
+        ClientTask* task = malloc(sizeof(ClientTask));
+        if (task == NULL) {
+            logMessage(logger, "ERROR", "Failed to allocate memory for client task");
+            close(new_socket);
+            continue;
+        }
+
+        task->client_socket = new_socket;
+        task->context = &context; // Pass the shared ServerContext
+
+        // Add the task to the thread pool
+        if (addTaskToThreadPool(pool, handleClient, task) != 0) {
+            logMessage(logger, "ERROR", "Thread pool queue is full. Dropping connection for client socket: %d", new_socket);
+            close(new_socket);
+            free(task);
+        }
+    }
+
+    // Cleanup
+    logMessage(logger, "INFO", "Shutting down DNS server");
+    destroyLogger(logger);
+    destroyThreadPool(pool);
+    freeTrie(root);
+    freeCache(cache);
+    close(server_fd);
     return 0;
 }

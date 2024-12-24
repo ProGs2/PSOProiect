@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define MAX_CACHE 100
-#define TTL_VALUE_CACHE 10
+#define TTL_VALUE_CACHE 50
 
 typedef struct CacheEntry{
     char* domain_name; 
@@ -12,7 +12,6 @@ typedef struct CacheEntry{
     time_t ttl;
     time_t timestamp;
     struct CacheEntry* next;
-    struct CacheEntry* prev;
 }CacheEntry;
 
 typedef struct DNSCache{
@@ -25,5 +24,6 @@ unsigned int hash_function(const char* domain_name);
 struct DNSCache* addCacheEntry(struct DNSCache* cache, struct CacheEntry* cache_entry);
 char* lookupDNSCache(struct DNSCache* cache, char* domain_name);
 struct DNSCache* DNSCacheCleanUp(struct DNSCache* cache);
+void printDNSCache(struct DNSCache* cache);
 
 #endif

@@ -16,6 +16,8 @@
 #define GET_DNSVALUE "./Scripts/get_DNSvalue.sh " // + path_to_file + nr_line
 #define GET_DNSTTL "./Scripts/get_DNSttl.sh " // + path_to_file + nr_line
 
+#define NR_ARRAY 10
+
 void error(char* text)
 {
     printf("Error:%s\n", text);
@@ -104,17 +106,20 @@ char** getArrayOfDomainNames()
         error("Error in retriving the array of domains from using popen() with GET_ARRAY_OF_DOMAINS");
     }
 
+    printf("%s-%d\n",buffer,nr_zones);
+
     char** domains = (char**)malloc(nr_zones * sizeof(char*));
-    for(int i=0;i<nr_zones;i++)
-    {
-        char delim[] = " \n";
-        char* token = strtok(buffer, delim);
-        while(token != NULL)
-        {
-            domains[i] = (char*)malloc(strlen(token) * sizeof(char));
-            strcpy(domains[i], token);
-            token = strtok(NULL, delim);
-        }
+    char delim[] = " \n";
+    char* token = strtok(buffer, delim); // Start tokenizing buffer
+    int i = 0;
+
+    while (token != NULL) {
+        // Allocate memory for each domain and copy the token
+        domains[i] = (char*)malloc((strlen(token) + 1) * sizeof(char));
+        strcpy(domains[i], token);
+
+        token = strtok(NULL, delim); // Get the next token
+        i++;
     }
     printf("The domain names are:\n");
     for(int i=0;i<nr_zones;i++)
@@ -314,7 +319,7 @@ char** getTerminalNames(char* path_to_zone)
 
     strcpy(str, GET_TERMINAL_NAMES);
     strcat(str, path_to_zone);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
 
     fp = popen(str, "r");
     if (fp == NULL) {
@@ -327,7 +332,7 @@ char** getTerminalNames(char* path_to_zone)
     //printf("%s\n", buffer);
 
     //trebuie sa returnez un array de string-uri :>
-    char** names = (char**)malloc(10 * sizeof(char*));
+    char** names = (char**)malloc(NR_ARRAY * sizeof(char*));
     int index = 0;
     char* token = strtok(buffer, " ");
     while(token != NULL)
@@ -349,7 +354,7 @@ char* getDNSTypeFromZoneFile(char* path_to_zone, char* nr_line_in_zone)
     strcpy(str, GET_DNSTYPE);
     strcat(str, path_to_zone);
     strcat(str, nr_line_in_zone);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
     pfile = popen(str, "r");
 
     fgets(buffer, sizeof(buffer), pfile);
@@ -368,7 +373,7 @@ char* getDNSValueFromZoneFile(char* path_to_zone, char* nr_line_in_zone)
     strcpy(str, GET_DNSVALUE);
     strcat(str, path_to_zone);
     strcat(str, nr_line_in_zone);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
     pfile = popen(str, "r");
 
     fgets(buffer, sizeof(buffer), pfile);
@@ -387,7 +392,7 @@ int getDNSTtlValueFromZoneFile(char* path_to_zone, char* nr_line_in_zone)
     strcpy(str, GET_DNSTTL);
     strcat(str, path_to_zone);
     strcat(str, nr_line_in_zone);
-    printf("-->%s<--\n", str);
+    //printf("-->%s<--\n", str);
     pfile = popen(str, "r");
 
     fgets(buffer, sizeof(buffer), pfile);
@@ -442,7 +447,7 @@ struct TrieNode* createTerminalNode(char* name, char* domain)
     fp = popen(str, "r");
 
     fgets(buffer, sizeof(buffer), fp);
-    printf("The path file of the zone: %s\n", buffer);
+    //printf("The path file of the zone: %s\n", buffer);
     buffer[strcspn(buffer, "\n")] = '\0';   ///succes :)
 
     pclose(fp);
@@ -513,10 +518,10 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct
 {
     char** words = extractWordsFromDomain(domain_name);
     int nr_words = getCharArraySize(words) - 1;
-    for(int i=0;i<nr_words + 1;i++)
-    {
-        printf("-->%s<--\n", words[i]);
-    }
+    // for(int i=0;i<nr_words + 1;i++)
+    // {
+    //     printf("-->%s<--\n", words[i]);
+    // }
 
     char* searchDNSCache = lookupDNSCache(cache, domain_name);
     if(searchDNSCache != NULL)
@@ -539,9 +544,9 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct
     {
         for(int i=0;i<search_node->nr_childrens;i++)
         {
-            printf("%s are %d copii\n", search_node->label, search_node->nr_childrens);
-            printf("%s == %s\n", search_node->childrens[i]->label, words[nr_words]);
-            printf("%d\n", nr_words);
+            //printf("%s are %d copii\n", search_node->label, search_node->nr_childrens);
+            //printf("%s == %s\n", search_node->childrens[i]->label, words[nr_words]);
+            //printf("%d\n", nr_words);
             if(strcmp(search_node->childrens[i]->label, words[nr_words]) == 0){
                 nr_words--;
                 printf("%s == %s\n", search_node->childrens[i]->label, words[nr_words + 1]);
@@ -552,7 +557,7 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct
                     //printf("%s\n", search_node->records[i].value);
                     if(search_node->records[j].value != NULL && nr_words == -1)
                     {
-                        printf("%s\n", search_node->records[j].value);
+                        //printf("%s\n", search_node->records[j].value);
                         struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry*));
                         cache_entry = createCacheEntry();
                         cache_entry->domain_name = (char*)malloc((strlen(domain_name)  +1) * sizeof(char));
@@ -561,13 +566,14 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct
                         strcpy(cache_entry->record_value, search_node->records[j].value);
                         cache_entry->timestamp = time(NULL);
                         cache_entry->ttl = TTL_VALUE_CACHE;
+                        //printf("%s\n",cache_entry->record_value);
                         return cache_entry;
                     }
                 }
                 if(nr_words == -1 ){
                     search_node = search_node->childrens[0];
                     printf("Itself node found!\n");
-                    printf("%d %s\n", search_node->nr_records, search_node->label);
+                    //printf("%d %s\n", search_node->nr_records, search_node->label);
                     srand(time(0));
                     int rand_nr = rand() % 2;
                     //printf("%d\n", rand_nr);
@@ -581,6 +587,6 @@ struct CacheEntry* retriveValue(struct TrieNode* root, char* domain_name, struct
                 }
             }
         }
-        return "Failed to find the value!";
+        return NULL;
     }
 }
