@@ -10,9 +10,9 @@ void* threadWorker(void* threadpool) {
         pthread_mutex_lock(&(pool->lock));
 
         // Wait for tasks
-        while (pool->queue_size == 0 && !pool->stop) {
+        while (pool->queue_size == 0 && !pool->stop) { //daca coasa este goala si thread pool-ul este inca activ
             printf("Worker waiting for tasks.\n");
-            pthread_cond_wait(&(pool->notify), &(pool->lock));
+            pthread_cond_wait(&(pool->notify), &(pool->lock)); //isi da sleep pana cand primeste variabila de conditie 
         }
 
         if (pool->stop) {
@@ -21,9 +21,9 @@ void* threadWorker(void* threadpool) {
             pthread_exit(NULL);
         }
 
-        // Fetch task
-        ThreadPoolTask task = pool->task_queue[pool->queue_front];
-        pool->queue_front = (pool->queue_front + 1) % MAX_QUEUE;
+        // Fetch task 
+        ThreadPoolTask task = pool->task_queue[pool->queue_front]; //ia primul task disponibil din coada 
+        pool->queue_front = (pool->queue_front + 1) % MAX_QUEUE; //update (fucntioneaza ca o coada circulara)
         pool->queue_size--;
 
         printf("Worker fetched a task. Queue size: %d\n", pool->queue_size);

@@ -7,7 +7,6 @@
 #include "cache.h"
 #include "thread.h"
 #include "logger.h"
-#include <signal.h>
 
 typedef struct {
     struct TrieNode* root;
@@ -186,8 +185,8 @@ int main() {
     logMessage(logger, "INFO", "Shutting down DNS server");
     destroyLogger(logger);
     destroyThreadPool(pool);
-    freeTrie(root);
-    freeCache(cache);
+    free(root);
+    free(cache);
     close(server_fd);
     return 0;
 }

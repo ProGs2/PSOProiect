@@ -3,7 +3,6 @@
 
 #include <pthread.h>
 
-// Maximum number of threads and task queue size
 #define MAX_THREADS 10
 #define MAX_QUEUE 100
 
@@ -15,8 +14,8 @@ typedef struct {
 
 // Thread pool structure
 typedef struct {
-    pthread_t threads[MAX_THREADS];      // Array of worker threads
-    ThreadPoolTask task_queue[MAX_QUEUE]; // Task queue
+    pthread_t threads[MAX_THREADS];      // array of worker threads
+    ThreadPoolTask task_queue[MAX_QUEUE]; // task queue
     int queue_size;                      // Current size of the task queue
     int queue_front;                     // Front index of the task queue
     int queue_rear;                      // Rear index of the task queue
@@ -25,9 +24,8 @@ typedef struct {
     int stop;                            // Flag to stop the thread pool
 } ThreadPool;
 
-// Function prototypes
 ThreadPool* initThreadPool(int thread_count);
 int addTaskToThreadPool(ThreadPool* pool, void (*function)(void*), void* argument);
 void destroyThreadPool(ThreadPool* pool);
 
-#endif // THREAD_H
+#endif

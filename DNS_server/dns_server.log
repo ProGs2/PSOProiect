@@ -183,3 +183,262 @@
 [2024-12-24 20:16:15] [INFO] Sent response to client 6: 192.168.1.2
 
 [2024-12-24 20:16:15] [INFO] Closed connection for client socket: 6
+[2024-12-26 10:49:48] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 10:49:48] [INFO] Server is listening on port 8081
+[2024-12-26 10:50:07] [INFO] Accepted connection from client socket: 6
+[2024-12-26 10:50:07] [INFO] Handling client socket: 6
+[2024-12-26 10:50:07] [INFO] Received query from client 6: youtube.ro
+[2024-12-26 10:50:07] [INFO] Domain not found for query: youtube.ro
+[2024-12-26 10:50:07] [INFO] Sent response to client 6: Record not found
+[2024-12-26 10:50:07] [INFO] Closed connection for client socket: 6
+[2024-12-26 10:50:12] [INFO] Accepted connection from client socket: 7
+[2024-12-26 10:50:12] [INFO] Handling client socket: 7
+[2024-12-26 10:50:12] [INFO] Received query from client 7: youtube.gov
+[2024-12-26 10:50:12] [INFO] Cache/Trie hit for query youtube.gov -> 192.162.1.2
+
+[2024-12-26 10:50:12] [INFO] Added query result to cache: youtube.gov
+[2024-12-26 10:50:12] [INFO] Sent response to client 7: 192.162.1.2
+
+[2024-12-26 10:50:12] [INFO] Closed connection for client socket: 7
+[2024-12-26 10:50:14] [INFO] Accepted connection from client socket: 6
+[2024-12-26 10:50:14] [INFO] Handling client socket: 6
+[2024-12-26 10:50:14] [INFO] Received query from client 6: youtube.gov
+[2024-12-26 10:50:14] [INFO] Cache/Trie hit for query youtube.gov -> 192.162.1.2
+
+[2024-12-26 10:50:14] [INFO] Added query result to cache: youtube.gov
+[2024-12-26 10:50:14] [INFO] Sent response to client 6: 192.162.1.2
+
+[2024-12-26 10:50:14] [INFO] Closed connection for client socket: 6
+[2024-12-26 10:50:15] [INFO] Accepted connection from client socket: 7
+[2024-12-26 10:50:15] [INFO] Handling client socket: 7
+[2024-12-26 10:50:15] [INFO] Received query from client 7: youtube.gov
+[2024-12-26 10:50:15] [INFO] Cache/Trie hit for query youtube.gov -> 192.160.1.1
+
+[2024-12-26 10:50:15] [INFO] Added query result to cache: youtube.gov
+[2024-12-26 10:50:15] [INFO] Sent response to client 7: 192.160.1.1
+
+[2024-12-26 10:50:15] [INFO] Closed connection for client socket: 7
+[2024-12-26 10:50:16] [INFO] Accepted connection from client socket: 6
+[2024-12-26 10:50:16] [INFO] Handling client socket: 6
+[2024-12-26 10:50:16] [INFO] Received query from client 6: youtube.gov
+[2024-12-26 10:50:16] [INFO] Cache/Trie hit for query youtube.gov -> 192.160.1.1
+
+[2024-12-26 10:50:16] [INFO] Added query result to cache: youtube.gov
+[2024-12-26 10:50:16] [INFO] Sent response to client 6: 192.160.1.1
+
+[2024-12-26 10:50:16] [INFO] Closed connection for client socket: 6
+[2024-12-26 10:50:17] [INFO] Accepted connection from client socket: 7
+[2024-12-26 10:50:17] [INFO] Handling client socket: 7
+[2024-12-26 10:50:17] [INFO] Received query from client 7: youtube.gov
+[2024-12-26 10:50:17] [INFO] Cache/Trie hit for query youtube.gov -> 192.160.1.1
+
+[2024-12-26 10:50:17] [INFO] Added query result to cache: youtube.gov
+[2024-12-26 10:50:17] [INFO] Sent response to client 7: 192.160.1.1
+
+[2024-12-26 10:50:17] [INFO] Closed connection for client socket: 7
+[2024-12-26 11:37:51] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 11:37:51] [ERROR] Bind failed
+[2024-12-26 11:38:17] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 11:38:17] [ERROR] Bind failed
+[2024-12-26 11:38:48] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 11:38:48] [ERROR] Bind failed
+[2024-12-26 11:41:47] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 11:41:47] [INFO] Server is listening on port 8081
+[2024-12-26 11:42:01] [INFO] Accepted connection from client socket: 6
+[2024-12-26 11:42:01] [INFO] Handling client socket: 6
+[2024-12-26 11:42:01] [INFO] Received query from client 6: example.com
+[2024-12-26 11:42:01] [INFO] Cache/Trie hit for query example.com -> 192.168.1.1
+
+[2024-12-26 11:42:01] [INFO] Added query result to cache: example.com
+[2024-12-26 11:42:01] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-26 11:42:01] [INFO] Closed connection for client socket: 6
+[2024-12-26 11:42:03] [INFO] Accepted connection from client socket: 7
+[2024-12-26 11:42:03] [INFO] Handling client socket: 7
+[2024-12-26 11:42:03] [INFO] Received query from client 7: example.com
+[2024-12-26 11:42:03] [INFO] Cache/Trie hit for query example.com -> 192.168.1.1
+
+[2024-12-26 11:42:03] [INFO] Added query result to cache: example.com
+[2024-12-26 11:42:03] [INFO] Sent response to client 7: 192.168.1.1
+
+[2024-12-26 11:42:03] [INFO] Closed connection for client socket: 7
+[2024-12-26 11:42:05] [INFO] Accepted connection from client socket: 6
+[2024-12-26 11:42:05] [INFO] Handling client socket: 6
+[2024-12-26 11:42:05] [INFO] Received query from client 6: example.com
+[2024-12-26 11:42:05] [INFO] Cache/Trie hit for query example.com -> 192.168.1.2
+
+[2024-12-26 11:42:05] [INFO] Added query result to cache: example.com
+[2024-12-26 11:42:05] [INFO] Sent response to client 6: 192.168.1.2
+
+[2024-12-26 11:42:05] [INFO] Closed connection for client socket: 6
+[2024-12-26 11:42:16] [INFO] Accepted connection from client socket: 7
+[2024-12-26 11:42:16] [INFO] Handling client socket: 7
+[2024-12-26 11:42:16] [INFO] Received query from client 7: example.com
+[2024-12-26 11:42:16] [INFO] Cache/Trie hit for query example.com -> 192.168.1.2
+
+[2024-12-26 11:42:16] [INFO] Added query result to cache: example.com
+[2024-12-26 11:42:16] [INFO] Sent response to client 7: 192.168.1.2
+
+[2024-12-26 11:42:16] [INFO] Closed connection for client socket: 7
+[2024-12-26 11:43:44] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 11:43:44] [INFO] Server is listening on port 8081
+[2024-12-26 11:43:51] [INFO] Accepted connection from client socket: 6
+[2024-12-26 11:43:51] [INFO] Handling client socket: 6
+[2024-12-26 11:43:51] [INFO] Received query from client 6: www.example.com
+[2024-12-26 11:43:51] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 11:43:51] [INFO] Added query result to cache: www.example.com
+[2024-12-26 11:43:51] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 11:43:51] [INFO] Closed connection for client socket: 6
+[2024-12-26 11:43:53] [INFO] Accepted connection from client socket: 7
+[2024-12-26 11:43:53] [INFO] Handling client socket: 7
+[2024-12-26 11:43:53] [INFO] Received query from client 7: www.example.com
+[2024-12-26 11:43:53] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 11:43:53] [INFO] Added query result to cache: www.example.com
+[2024-12-26 11:43:53] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 11:43:53] [INFO] Closed connection for client socket: 7
+[2024-12-26 11:43:56] [INFO] Accepted connection from client socket: 6
+[2024-12-26 11:43:56] [INFO] Handling client socket: 6
+[2024-12-26 11:43:56] [INFO] Received query from client 6: www.example.com
+[2024-12-26 11:43:56] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 11:43:56] [INFO] Added query result to cache: www.example.com
+[2024-12-26 11:43:56] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 11:43:56] [INFO] Closed connection for client socket: 6
+[2024-12-26 11:44:13] [INFO] Accepted connection from client socket: 7
+[2024-12-26 11:44:13] [INFO] Handling client socket: 7
+[2024-12-26 11:44:13] [INFO] Received query from client 7: www.mydomain.org
+[2024-12-26 11:44:13] [INFO] Cache/Trie hit for query www.mydomain.org -> 192.168.1.3
+
+[2024-12-26 11:44:13] [INFO] Added query result to cache: www.mydomain.org
+[2024-12-26 11:44:13] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 11:44:13] [INFO] Closed connection for client socket: 7
+[2024-12-26 11:44:14] [INFO] Accepted connection from client socket: 6
+[2024-12-26 11:44:14] [INFO] Handling client socket: 6
+[2024-12-26 11:44:14] [INFO] Received query from client 6: www.mydomain.org
+[2024-12-26 11:44:14] [INFO] Cache/Trie hit for query www.mydomain.org -> 192.168.1.3
+
+[2024-12-26 11:44:14] [INFO] Added query result to cache: www.mydomain.org
+[2024-12-26 11:44:14] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 11:44:14] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:28:10] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:28:10] [INFO] Server is listening on port 8081
+[2024-12-26 13:29:06] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:29:06] [INFO] Server is listening on port 8081
+[2024-12-26 13:29:11] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:29:11] [INFO] Handling client socket: 6
+[2024-12-26 13:29:11] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:29:11] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:29:11] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:29:11] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:29:11] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:30:02] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:30:02] [INFO] Shutting down DNS server
+[2024-12-26 13:30:47] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:30:47] [INFO] Server is listening on port 8081
+[2024-12-26 13:31:26] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:31:26] [INFO] Shutting down DNS server
+[2024-12-26 13:34:25] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:34:25] [INFO] Server is listening on port 8081
+[2024-12-26 13:34:34] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:34:34] [INFO] Shutting down DNS server
+[2024-12-26 13:35:25] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:35:25] [INFO] Server is listening on port 8081
+[2024-12-26 13:35:27] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:35:27] [INFO] Handling client socket: 6
+[2024-12-26 13:35:27] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:35:27] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:27] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:27] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:35:27] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:35:28] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:35:28] [INFO] Handling client socket: 7
+[2024-12-26 13:35:28] [INFO] Received query from client 7: www.example.com
+[2024-12-26 13:35:28] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:28] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:28] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 13:35:28] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:35:29] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:35:29] [INFO] Handling client socket: 6
+[2024-12-26 13:35:29] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:35:29] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:29] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:29] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:35:29] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:35:29] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:35:29] [INFO] Handling client socket: 7
+[2024-12-26 13:35:29] [INFO] Received query from client 7: www.example.com
+[2024-12-26 13:35:29] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:29] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:29] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 13:35:29] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:35:30] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:35:30] [INFO] Handling client socket: 6
+[2024-12-26 13:35:30] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:35:30] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:30] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:30] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:35:30] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:35:37] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:35:37] [INFO] Handling client socket: 7
+[2024-12-26 13:35:37] [INFO] Received query from client 7: www.example.com
+[2024-12-26 13:35:37] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:37] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:37] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 13:35:37] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:35:38] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:35:38] [INFO] Handling client socket: 6
+[2024-12-26 13:35:38] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:35:38] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:38] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:38] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:35:38] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:35:40] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:35:40] [INFO] Handling client socket: 7
+[2024-12-26 13:35:40] [INFO] Received query from client 7: www.example.com
+[2024-12-26 13:35:40] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:40] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:40] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 13:35:40] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:35:53] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:35:53] [INFO] Handling client socket: 6
+[2024-12-26 13:35:53] [INFO] Received query from client 6: www.example.com
+[2024-12-26 13:35:53] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:53] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:53] [INFO] Sent response to client 6: 192.168.1.3
+
+[2024-12-26 13:35:53] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:35:54] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:35:54] [INFO] Handling client socket: 7
+[2024-12-26 13:35:54] [INFO] Received query from client 7: www.example.com
+[2024-12-26 13:35:54] [INFO] Cache/Trie hit for query www.example.com -> 192.168.1.3
+
+[2024-12-26 13:35:54] [INFO] Added query result to cache: www.example.com
+[2024-12-26 13:35:54] [INFO] Sent response to client 7: 192.168.1.3
+
+[2024-12-26 13:35:54] [INFO] Closed connection for client socket: 7
