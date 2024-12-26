@@ -35,13 +35,46 @@ void printTrie(struct TrieNode* node, int level) {
         printTrie(node->childrens[i], level + 1);
     }
 }
+void writeTrieToDot(struct TrieNode* node, FILE* file, int parentId) {
+    static int nodeId = 0; //este necesar pentru programul asta, altfel nu merge
+    int currentId = nodeId++;
+    fprintf(file, "    node%d [label=\"%s\"];\n", currentId, node->label);
 
-// Function to handle client requests
+    if (parentId != -1) {
+        fprintf(file, "    node%d -> node%d;\n", parentId, currentId);
+    }
+
+    for (int i = 0; i < node->nr_childrens; i++) {
+        writeTrieToDot(node->childrens[i], file, currentId);
+    }
+}
+
+void visualizeTrie(struct TrieNode* root) {
+    FILE* dotFile = fopen("trie.dot", "w");
+    if (!dotFile) {
+        perror("Failed to create .dot file for Trie visualization");
+        return;
+    }
+
+    //aici avem header-ul, specificam forma nodurilor, etc
+    fprintf(dotFile, "digraph Trie {\n");
+    fprintf(dotFile, "    node [shape=circle];\n");
+
+    writeTrieToDot(root, dotFile, -1);
+
+    fprintf(dotFile, "}\n");
+    fclose(dotFile);
+
+    system("dot -Tpng trie.dot -o trie.png");
+
+    system("xdg-open trie.png");
+}
+
 void handleClient(void* arg) {
     ClientTask* task = (ClientTask*)arg; // Cast argument to ClientTask*
     int client_socket = task->client_socket;
     ServerContext* context = task->context;
-    free(task); // Free the dynamically allocated memory for the task
+    free(task);
 
     logMessage(context->logger, "INFO", "Handling client socket: %d", client_socket);
 
@@ -57,7 +90,16 @@ void handleClient(void* arg) {
     buffer[valread] = '\0';
     logMessage(context->logger, "INFO", "Received query from client %d: %s", client_socket, buffer);
 
-    // Lookup in trie and cache
+    // Check for "trie" command
+    if (strcmp(buffer, "trie") == 0) {
+        logMessage(context->logger, "INFO", "Client requested Trie visualization.");
+        visualizeTrie(context->root);
+        char* response = "Trie visualization opened on the server.";
+        send(client_socket, response, strlen(response), 0);
+        close(client_socket);
+        return;
+    }
+
     struct CacheEntry* cache_entry = retriveValue(context->root, buffer, context->cache);
 
     if (cache_entry) {
@@ -66,7 +108,6 @@ void handleClient(void* arg) {
         logMessage(context->logger, "INFO", "Domain not found for query: %s", buffer);
     }
 
-    // Add to cache if not already cached
     if (cache_entry) {
         addCacheEntry(context->cache, cache_entry);
         logMessage(context->logger, "INFO", "Added query result to cache: %s", buffer);

@@ -1,0 +1,72 @@
+digraph Trie {
+    node [shape=circle];
+    node0 [label="root"];
+    node1 [label="com"];
+    node0 -> node1;
+    node2 [label="example"];
+    node1 -> node2;
+    node3 [label="@"];
+    node2 -> node3;
+    node4 [label="ns1"];
+    node2 -> node4;
+    node5 [label="ns2"];
+    node2 -> node5;
+    node6 [label="www"];
+    node2 -> node6;
+    node7 [label="mail"];
+    node2 -> node7;
+    node8 [label="
+"];
+    node2 -> node8;
+    node9 [label="org"];
+    node0 -> node9;
+    node10 [label="mydomain"];
+    node9 -> node10;
+    node11 [label="@"];
+    node10 -> node11;
+    node12 [label="ns1"];
+    node10 -> node12;
+    node13 [label="ns2"];
+    node10 -> node13;
+    node14 [label="www"];
+    node10 -> node14;
+    node15 [label="mail"];
+    node10 -> node15;
+    node16 [label="
+"];
+    node10 -> node16;
+    node17 [label="ro"];
+    node0 -> node17;
+    node18 [label="google"];
+    node17 -> node18;
+    node19 [label="@"];
+    node18 -> node19;
+    node20 [label="ns1"];
+    node18 -> node20;
+    node21 [label="ns2"];
+    node18 -> node21;
+    node22 [label="www"];
+    node18 -> node22;
+    node23 [label="mail"];
+    node18 -> node23;
+    node24 [label="
+"];
+    node18 -> node24;
+    node25 [label="gov"];
+    node0 -> node25;
+    node26 [label="youtube"];
+    node25 -> node26;
+    node27 [label="@"];
+    node26 -> node27;
+    node28 [label="ns1"];
+    node26 -> node28;
+    node29 [label="ns2"];
+    node26 -> node29;
+    node30 [label="www"];
+    node26 -> node30;
+    node31 [label="mail"];
+    node26 -> node31;
+    node32 [label="
+"];
+    node26 -> node32;
+}

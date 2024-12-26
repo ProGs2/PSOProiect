@@ -11,5 +11,4 @@ $TTL 3600                      ; Default TTL for all records
 ns1     IN  A    192.150.1.1
 ns2     IN  A    192.155.1.2
 www     IN  A    192.152.1.3
-mail    IN  MX   mail.google.ro
 mail    IN  A    192.189.1.4

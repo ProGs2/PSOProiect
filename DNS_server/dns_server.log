@@ -442,3 +442,91 @@
 [2024-12-26 13:35:54] [INFO] Sent response to client 7: 192.168.1.3
 
 [2024-12-26 13:35:54] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:55:26] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 13:55:26] [INFO] Server is listening on port 8081
+[2024-12-26 13:55:39] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:55:39] [INFO] Handling client socket: 6
+[2024-12-26 13:55:39] [INFO] Received query from client 6: trie
+[2024-12-26 13:55:39] [INFO] Client requested Trie visualization.
+[2024-12-26 13:56:48] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:56:48] [INFO] Handling client socket: 6
+[2024-12-26 13:56:48] [INFO] Received query from client 6: trie.txt
+[2024-12-26 13:56:48] [INFO] Domain not found for query: trie.txt
+[2024-12-26 13:56:48] [INFO] Sent response to client 6: Record not found
+[2024-12-26 13:56:48] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:56:55] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:56:55] [INFO] Handling client socket: 7
+[2024-12-26 13:56:55] [INFO] Received query from client 7: example.com
+[2024-12-26 13:56:55] [INFO] Cache/Trie hit for query example.com -> 192.168.1.1
+
+[2024-12-26 13:56:55] [INFO] Added query result to cache: example.com
+[2024-12-26 13:56:55] [INFO] Sent response to client 7: 192.168.1.1
+
+[2024-12-26 13:56:55] [INFO] Closed connection for client socket: 7
+[2024-12-26 13:56:56] [INFO] Accepted connection from client socket: 6
+[2024-12-26 13:56:56] [INFO] Handling client socket: 6
+[2024-12-26 13:56:56] [INFO] Received query from client 6: example.com
+[2024-12-26 13:56:56] [INFO] Cache/Trie hit for query example.com -> 192.168.1.1
+
+[2024-12-26 13:56:56] [INFO] Added query result to cache: example.com
+[2024-12-26 13:56:56] [INFO] Sent response to client 6: 192.168.1.1
+
+[2024-12-26 13:56:56] [INFO] Closed connection for client socket: 6
+[2024-12-26 13:57:02] [INFO] Accepted connection from client socket: 7
+[2024-12-26 13:57:02] [INFO] Handling client socket: 7
+[2024-12-26 13:57:02] [INFO] Received query from client 7: trie
+[2024-12-26 13:57:02] [INFO] Client requested Trie visualization.
+[2024-12-26 14:00:47] [INFO] Accepted connection from client socket: 6
+[2024-12-26 14:00:47] [INFO] Handling client socket: 6
+[2024-12-26 14:00:47] [INFO] Received query from client 6: mail.example.com
+[2024-12-26 14:00:47] [INFO] Cache/Trie hit for query mail.example.com -> mail.example.com
+
+[2024-12-26 14:00:47] [INFO] Added query result to cache: mail.example.com
+[2024-12-26 14:00:47] [INFO] Sent response to client 6: mail.example.com
+
+[2024-12-26 14:00:47] [INFO] Closed connection for client socket: 6
+[2024-12-26 14:00:53] [INFO] Accepted connection from client socket: 7
+[2024-12-26 14:00:53] [INFO] Handling client socket: 7
+[2024-12-26 14:00:53] [INFO] Received query from client 7: mail.example.com
+[2024-12-26 14:00:53] [INFO] Cache/Trie hit for query mail.example.com -> mail.example.com
+
+[2024-12-26 14:00:53] [INFO] Added query result to cache: mail.example.com
+[2024-12-26 14:00:53] [INFO] Sent response to client 7: mail.example.com
+
+[2024-12-26 14:00:53] [INFO] Closed connection for client socket: 7
+[2024-12-26 14:00:54] [INFO] Accepted connection from client socket: 6
+[2024-12-26 14:00:54] [INFO] Handling client socket: 6
+[2024-12-26 14:00:54] [INFO] Received query from client 6: mail.example.com
+[2024-12-26 14:00:54] [INFO] Cache/Trie hit for query mail.example.com -> mail.example.com
+
+[2024-12-26 14:00:54] [INFO] Added query result to cache: mail.example.com
+[2024-12-26 14:00:54] [INFO] Sent response to client 6: mail.example.com
+
+[2024-12-26 14:00:54] [INFO] Closed connection for client socket: 6
+[2024-12-26 14:03:33] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 14:03:33] [INFO] Server is listening on port 8081
+[2024-12-26 14:03:36] [INFO] Accepted connection from client socket: 6
+[2024-12-26 14:03:36] [INFO] Handling client socket: 6
+[2024-12-26 14:03:36] [INFO] Received query from client 6: mail.example.com
+[2024-12-26 14:03:36] [INFO] Cache/Trie hit for query mail.example.com -> 192.168.1.4
+
+[2024-12-26 14:03:36] [INFO] Added query result to cache: mail.example.com
+[2024-12-26 14:03:36] [INFO] Sent response to client 6: 192.168.1.4
+
+[2024-12-26 14:03:36] [INFO] Closed connection for client socket: 6
+[2024-12-26 14:03:50] [INFO] Accepted connection from client socket: 7
+[2024-12-26 14:03:50] [INFO] Handling client socket: 7
+[2024-12-26 14:03:50] [INFO] Received query from client 7: trie
+[2024-12-26 14:03:50] [INFO] Client requested Trie visualization.
+[2024-12-26 14:05:13] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 14:05:13] [INFO] Server is listening on port 8081
+[2024-12-26 14:05:15] [INFO] Accepted connection from client socket: 6
+[2024-12-26 14:05:15] [INFO] Handling client socket: 6
+[2024-12-26 14:05:15] [INFO] Received query from client 6: trie
+[2024-12-26 14:05:15] [INFO] Client requested Trie visualization.
+[2024-12-26 14:14:23] [INFO] DNS server initialized. Listening on port 8081
+[2024-12-26 14:14:23] [INFO] Server is listening on port 8081
+[2024-12-26 14:14:27] [INFO] Accepted connection from client socket: 6
+[2024-12-26 14:14:27] [INFO] Handling client socket: 6
+[2024-12-26 14:14:27] [INFO] Received query from client 6: trie
+[2024-12-26 14:14:27] [INFO] Client requested Trie visualization.
