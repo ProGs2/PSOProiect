@@ -101,4 +101,8 @@ void dns_print_answer(const struct dns_answer *answer);
 size_t util_measure_name(const void *data, uint16_t offset);
 int dns_read_name(char *dest, const void *data, uint16_t offset, size_t max_len);
 
+/* debug */
+int debug_dns_request_parse(struct dns_packet* pkt, const void* data);
+void debug_dns_print_raw_packet(const uint8_t* buffer, size_t length);
+
 #endif

@@ -256,3 +256,51 @@ void dns_print_answer(const struct dns_answer* answer) {
     printf("RDLENGTH: %d\n", answer->rdlength);
     printf("RDATA: %s\n", answer->rdata);
 }
+
+/* debug functions */
+int debug_dns_request_parse(struct dns_packet* pkt, const void* data) {
+    size_t offset = 0;
+    
+    printf("Starting DNS packet parse\n");
+    
+    // Parse header
+    if (dns_header_parse(&pkt->header, data) < 0) {
+        printf("Failed to parse DNS header\n");
+        return -1;
+    }
+    offset += sizeof(struct dns_header);
+    
+    printf("Successfully parsed header, ID: %d, QR: %d\n", 
+           pkt->header.id, pkt->header.qr);
+    
+    // Parse question
+    int question_result = dns_question_parse(&pkt->question, data, &offset);
+    if (question_result < 0) {
+        printf("Failed to parse DNS question section\n");
+        return -1;
+    }
+    
+    printf("Successfully parsed question section, QNAME: %s\n", 
+           pkt->question.qname);
+    
+    // Parse answer if present
+    if (pkt->header.ancount > 0) {
+        printf("Attempting to parse %d answer(s)\n", pkt->header.ancount);
+        if (dns_answer_parse(&pkt->answer, data) < 0) {
+            printf("Failed to parse DNS answer section\n");
+            return -1;
+        }
+        printf("Successfully parsed answer section\n");
+    }
+    
+    return 0;
+}
+
+void debug_dns_print_raw_packet(const uint8_t* buffer, size_t length) {
+    printf("Raw packet dump (first 32 bytes or less):\n");
+    for (size_t i = 0; i < length && i < 32; i++) {
+        printf("%02x ", buffer[i]);
+        if ((i + 1) % 16 == 0) printf("\n");
+    }
+    printf("\n");
+}

@@ -45,4 +45,22 @@ void example_dns_callback(struct dns_packet *packet,
                          struct sockaddr_in *sender, 
                          void *user_data);
 
+/* forwarding function */
+int dns_forward_query(const struct dns_packet* query_pkt, 
+                     const char* forward_ip, 
+                     uint16_t forward_port,
+                     dns_callback_fn callback,
+                     void* user_data);
+
+/* waiting for response after forwarding */
+int dns_wait_response(uint16_t query_id, 
+                     int timeout_sec,
+                     dns_callback_fn callback,
+                     void* user_data);
+
+/* example callback for forwarding */
+void example_dns_forward_callback(struct dns_packet* packet, 
+                                  struct sockaddr_in* client_addr, 
+                                  void* user_data);
+
 #endif

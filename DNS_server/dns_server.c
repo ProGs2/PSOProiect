@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <time.h>
 
 #include "dns_packet.h"
 #include "dns_server.h"
@@ -77,7 +78,34 @@ void dns_cleanup_socket(void) {
     }
 }
 
-// send query packet using persistent socket
+// function to encode domain name into DNS wire format (fixing FormErr)
+static int dns_encode_name(uint8_t* buffer, const char* domain) {
+    uint8_t* label_length_ptr = buffer;
+    int total_length = 0;
+    int label_length = 0;
+    
+    while (1) {
+        if (*domain == '.' || *domain == '\0') {
+            *label_length_ptr = label_length;  // write length of previous label
+            label_length = 0;                  // reset for next label
+            if (*domain == '\0') {
+                buffer++;
+                total_length++;
+                *buffer = 0;                   // add trailing zero byte
+                return total_length + 1;
+            }
+            label_length_ptr = buffer + 1;     // point to where next length will go
+            domain++;                          // skip dot
+        } else {
+            buffer++;
+            *buffer = *domain;                 // copy char
+            label_length++;
+            domain++;
+        }
+        total_length++;
+    }
+}
+
 int dns_send_packet(const struct dns_packet* pkt, const char* server_ip, uint16_t port) {
     if (g_sockfd == -1) {
         fprintf(stderr, "Socket not initialized\n");
@@ -92,25 +120,52 @@ int dns_send_packet(const struct dns_packet* pkt, const char* server_ip, uint16_
         return -1;
     }
 
-    // serialize packet (same as before)
-    uint8_t buffer[512];
+    // serialize packet
+    uint8_t buffer[512];  // standard dns udp size
     size_t offset = 0;
 
-    // header
-    memcpy(buffer + offset, &pkt->header, sizeof(struct dns_header));
+    // convert header to network byte order
+    struct dns_header header = pkt->header;
+    header.id = htons(header.id);
+    header.qdcount = htons(header.qdcount);
+    header.ancount = htons(header.ancount);
+    header.nscount = htons(header.nscount);
+    header.arcount = htons(header.arcount);
+
+    // copy header
+    memcpy(buffer + offset, &header, sizeof(struct dns_header));
     offset += sizeof(struct dns_header);
 
-    // question
-    size_t qname_len = strlen(pkt->question.qname) + 1;
-    memcpy(buffer + offset, pkt->question.qname, qname_len);
-    offset += qname_len;
-    memcpy(buffer + offset, &pkt->question.qtype, sizeof(uint16_t));
+    // encode qname in dns wire format
+    int name_length = dns_encode_name(buffer + offset, pkt->question.qname);
+    if (name_length < 0) {
+        fprintf(stderr, "Failed to encode domain name\n");
+        return -1;
+    }
+    offset += name_length;
+
+    // add QTYPE and QCLASS in network byte order
+    uint16_t qtype = htons(pkt->question.qtype);
+    uint16_t qclass = htons(pkt->question.qclass);
+    
+    memcpy(buffer + offset, &qtype, sizeof(uint16_t));
     offset += sizeof(uint16_t);
-    memcpy(buffer + offset, &pkt->question.qclass, sizeof(uint16_t));
+    memcpy(buffer + offset, &qclass, sizeof(uint16_t));
     offset += sizeof(uint16_t);
 
-    return sendto(g_sockfd, buffer, offset, 0,
-                 (struct sockaddr*)&server_addr, sizeof(server_addr));
+    printf("Sending DNS query to %s:%d (packet size: %zu bytes)\n", 
+           server_ip, port, offset);
+
+    ssize_t sent = sendto(g_sockfd, buffer, offset, 0,
+                         (struct sockaddr*)&server_addr, sizeof(server_addr));
+    
+    if (sent < 0) {
+        perror("Failed to send DNS query");
+    } else {
+        printf("Successfully sent %zd bytes\n", sent);
+    }
+    
+    return sent;
 }
 
 // send answer packet to a client
@@ -285,4 +340,144 @@ void example_dns_callback(struct dns_packet* packet, struct sockaddr_in* sender,
 // stop listening for packets
 void dns_stop_listening(void) {
     g_keep_running = 0;
+}
+
+// forwarding function
+int dns_forward_query(const struct dns_packet* query_pkt, 
+                     const char* forward_ip, 
+                     uint16_t forward_port,
+                     dns_callback_fn callback,
+                     void* user_data)
+{
+    if (g_sockfd == -1) {
+        fprintf(stderr, "Socket not initialized\n");
+        return -1;
+    }
+
+    // forward query to other dns server
+    int result = dns_send_packet(query_pkt, forward_ip, forward_port);
+    if (result < 0) {
+        fprintf(stderr, "Failed to send forwarded query\n");
+        return -1;
+    }
+
+    // wait for response
+    return dns_wait_response(query_pkt->header.id, 5, callback, user_data);
+}
+
+// wait for a dns response (and do something with the response through callback)
+int dns_wait_response(uint16_t query_id, 
+                     int timeout_sec,
+                     dns_callback_fn callback,
+                     void* user_data)
+{
+    struct timeval tv;
+    fd_set readfds;
+    uint8_t buffer[512];
+    struct sockaddr_in sender_addr;
+    socklen_t sender_len = sizeof(sender_addr);
+    struct dns_packet response_pkt;
+    char sender_ip[INET_ADDRSTR_LEN];
+    time_t start_time = time(NULL);
+
+    while ((time(NULL) - start_time) < timeout_sec) {
+        // set timeout for select() to 1 second to allow loop continuation
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
+        // clear fd set and add socket
+        FD_ZERO(&readfds);
+        FD_SET(g_sockfd, &readfds);
+
+        // wait for response
+        int ready = select(g_sockfd + 1, &readfds, NULL, NULL, &tv);
+        
+        if (ready < 0) {
+            if (errno == EINTR) continue;
+            perror("select() failed");
+            return -1;
+        }
+        
+        if (ready == 0) {
+            continue;  // no data yet, but not timed out
+        }
+
+        // recv response
+        memset(buffer, 0, sizeof(buffer));
+        ssize_t received = recvfrom(g_sockfd, buffer, sizeof(buffer), 0,
+                                  (struct sockaddr*)&sender_addr, &sender_len);
+        
+        if (received < 0) {
+            if (errno == EINTR) continue;
+            perror("recvfrom() failed");
+            return -1;
+        }
+
+        // parse response
+        if (dns_request_parse(&response_pkt, buffer) == 0) {
+            // sender address to string for debugging
+            inet_ntop(AF_INET, &sender_addr.sin_addr, sender_ip, INET_ADDRSTR_LEN);
+            printf("Received response from %s:%d\n", 
+                   sender_ip, ntohs(sender_addr.sin_port));
+
+            // check if this is the response we wanted
+            if (response_pkt.header.id == query_id && response_pkt.header.qr == QR_RESPONSE) {
+                // call callback with response
+                if (callback) {
+                    callback(&response_pkt, &sender_addr, user_data);
+                }
+                // // // // // //
+
+                // clean up
+                if (response_pkt.question.qname) {
+                    free(response_pkt.question.qname);
+                }
+                if (response_pkt.header.ancount > 0 && response_pkt.answer.name) {
+                    free(response_pkt.answer.name);
+                    if (response_pkt.answer.rdata) {
+                        free(response_pkt.answer.rdata);
+                    }
+                }
+                return 0;
+            }
+
+            // if not response we wanted, clean up
+            if (response_pkt.question.qname) {
+                free(response_pkt.question.qname);
+            }
+            if (response_pkt.header.ancount > 0 && response_pkt.answer.name) {
+                free(response_pkt.answer.name);
+                if (response_pkt.answer.rdata) {
+                    free(response_pkt.answer.rdata);
+                }
+            }
+        }
+    }
+
+    return -1;
+}
+
+// example of callback function for forwarding
+void example_dns_forward_callback(struct dns_packet* packet, 
+                                  struct sockaddr_in* client_addr, 
+                                  void* user_data)
+{
+    printf("Processing forwarded DNS response:\n");
+    dns_print_packet(packet);
+    
+    // forward response back to original client
+    if (user_data) {  // user_data client address
+        struct sockaddr_in* original_client = (struct sockaddr_in*)user_data;
+        printf("Forwarding response back to original client %s:%d\n",
+               inet_ntoa(original_client->sin_addr),
+               ntohs(original_client->sin_port));
+        
+        int ret = dns_send_answer(packet, original_client);
+        if (ret < 0) {
+            perror("Failed to send response to original client");
+        }
+        
+        // free saved client address
+        free(user_data);
+    }
 }
