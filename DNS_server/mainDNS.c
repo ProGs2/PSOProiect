@@ -2,16 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include <arpa/inet.h>
 #include "trie.h"
 #include "cache.h"
 #include "thread.h"
 #include "logger.h"
+#include "dns_server.h"
+
+// graceful shutdown stuff
+// if ctrl+c is entered, the wile(1) loop at the end of the program will not repeat, thus the clean up functions
+// will be reached
+static volatile sig_atomic_t server_running = 1;
+void handle_sigint(int sig) {
+    printf("\nServer will shut down after next request.\n");
+    server_running = 0;
+}
 
 typedef struct {
     struct TrieNode* root;
     struct DNSCache* cache;
-    struct Logger* logger;
+    Logger* logger;
 } ServerContext;
 
 typedef struct {
@@ -89,6 +100,7 @@ void handleClient(void* arg) {
 
     buffer[valread] = '\0';
     logMessage(context->logger, "INFO", "Received query from client %d: %s", client_socket, buffer);
+    // "buffer" contains query string (i.e. google.com)
 
     // Check for "trie" command
     if (strcmp(buffer, "trie") == 0) {
@@ -100,6 +112,9 @@ void handleClient(void* arg) {
         return;
     }
 
+    // CacheEntry object is created ONLY if the qname is found within the tree/cache
+    // If retrieveValue can't find the requested domain name, it returns NULL
+    // With this in mind, I do not need to use cache_entry in the forwarding handler
     struct CacheEntry* cache_entry = retriveValue(context->root, buffer, context->cache);
 
     if (cache_entry) {
@@ -111,6 +126,17 @@ void handleClient(void* arg) {
     if (cache_entry) {
         addCacheEntry(context->cache, cache_entry);
         logMessage(context->logger, "INFO", "Added query result to cache: %s", buffer);
+    } else {
+        // If program enters here, it means that the requested domain name does not exist locally and must be obtained
+        // through forwarding.
+        // Forwarding handler will receive buffer (== domain_name)
+        // [Insert functions to forward and load into cache HERE]
+        char ip_address[INET_ADDRSTR_LEN] = {0};
+        dns_query_domain(buffer, "1.1.1.1", 53, handle_dns_response, &ip_address);
+        logMessage(context->logger, "INFO", "Finished forwarding query. Received: %s", ip_address);
+        cache_entry = dns_createNewEntry(buffer, ip_address);
+        addCacheEntry(context->cache, cache_entry);
+        logMessage(context->logger, "INFO", "Added forwarded query result to cache: %s", buffer);
     }
 
     // Prepare the response
@@ -118,7 +144,9 @@ void handleClient(void* arg) {
     if (cache_entry && cache_entry->record_value) {
         response = cache_entry->record_value;
     } else {
-        response = "Record not found";
+        // OLD!! response = "Record not found";
+        // Will need to handle case where, even after forwarding, there is no response
+        printf("todo\n");
     }
 
     // Send the response back to the client
@@ -162,6 +190,14 @@ int main() {
     ThreadPool* pool = initThreadPool(5);
     logMessage(logger, "INFO", "DNS server initialized. Listening on port %d", PORT);
 
+    // prepare signal handling for ctrl+c
+    struct sigaction sa = {
+        .sa_handler = handle_sigint,
+        .sa_flags = 0
+    };
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+
     // Set up the server socket
     int server_fd;
     struct sockaddr_in address;
@@ -192,8 +228,9 @@ int main() {
     }
 
     logMessage(logger, "INFO", "Server is listening on port %d", PORT);
+    signal(SIGINT, handle_sigint);
 
-    while (1) {
+    while (server_running) {
         int new_socket = accept(server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
         if (new_socket < 0) {
             logMessage(logger, "ERROR", "Accept failed");
@@ -223,6 +260,7 @@ int main() {
     }
 
     // Cleanup
+    // never reached. needs a way to exit the previus infinite loop
     logMessage(logger, "INFO", "Shutting down DNS server");
     destroyLogger(logger);
     destroyThreadPool(pool);

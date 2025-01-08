@@ -1,3 +1,0 @@
-1) make
-2) sudo ./dns google.com
-3) in alt terminal : dig @localhost -p 5355 google.com

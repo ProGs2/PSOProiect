@@ -530,3 +530,190 @@
 [2024-12-26 14:14:27] [INFO] Handling client socket: 6
 [2024-12-26 14:14:27] [INFO] Received query from client 6: trie
 [2024-12-26 14:14:27] [INFO] Client requested Trie visualization.
+[2025-01-08 12:31:13] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:31:13] [INFO] Server is listening on port 8081
+[2025-01-08 12:33:05] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:33:05] [INFO] Server is listening on port 8081
+[2025-01-08 12:40:09] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:40:09] [INFO] Server is listening on port 8081
+[2025-01-08 12:40:21] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:40:21] [INFO] Handling client socket: 6
+[2025-01-08 12:40:21] [INFO] Received query from client 6: facebook.com
+[2025-01-08 12:40:21] [INFO] Domain not found for query: facebook.com
+[2025-01-08 12:40:45] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:40:45] [ERROR] Bind failed
+[2025-01-08 12:41:07] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:41:07] [ERROR] Bind failed
+[2025-01-08 12:42:35] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:42:35] [INFO] Server is listening on port 8081
+[2025-01-08 12:42:42] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:42:42] [INFO] Handling client socket: 6
+[2025-01-08 12:42:42] [INFO] Received query from client 6: facebook.com
+[2025-01-08 12:42:42] [INFO] Domain not found for query: facebook.com
+[2025-01-08 12:45:19] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:45:19] [INFO] Server is listening on port 8081
+[2025-01-08 12:45:34] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:45:34] [INFO] Handling client socket: 6
+[2025-01-08 12:45:34] [INFO] Received query from client 6: mydomain.org
+[2025-01-08 12:45:34] [INFO] Cache/Trie hit for query mydomain.org -> 192.168.1.1
+
+[2025-01-08 12:45:34] [INFO] Added query result to cache: mydomain.org
+[2025-01-08 12:45:34] [INFO] Sent response to client 6: 192.168.1.1
+
+[2025-01-08 12:45:34] [INFO] Closed connection for client socket: 6
+[2025-01-08 12:45:56] [INFO] Accepted connection from client socket: 7
+[2025-01-08 12:45:56] [INFO] Handling client socket: 7
+[2025-01-08 12:45:56] [INFO] Received query from client 7: google.com
+[2025-01-08 12:45:56] [INFO] Domain not found for query: google.com
+[2025-01-08 12:47:13] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:47:13] [INFO] Server is listening on port 8081
+[2025-01-08 12:47:26] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:47:26] [INFO] Handling client socket: 6
+[2025-01-08 12:47:26] [INFO] Received query from client 6: facebook.com
+[2025-01-08 12:47:26] [INFO] Domain not found for query: facebook.com
+[2025-01-08 12:54:41] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:54:41] [INFO] Server is listening on port 8081
+[2025-01-08 12:54:47] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:54:47] [INFO] Handling client socket: 6
+[2025-01-08 12:54:47] [INFO] Received query from client 6: facebook.com
+[2025-01-08 12:54:47] [INFO] Domain not found for query: facebook.com
+[2025-01-08 12:59:53] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 12:59:53] [INFO] Server is listening on port 8081
+[2025-01-08 12:59:56] [INFO] Accepted connection from client socket: 6
+[2025-01-08 12:59:56] [INFO] Handling client socket: 6
+[2025-01-08 12:59:56] [INFO] Received query from client 6: facebook.com
+[2025-01-08 12:59:56] [INFO] Domain not found for query: facebook.com
+[2025-01-08 13:00:01] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 13:01:37] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 13:01:37] [INFO] Server is listening on port 8081
+[2025-01-08 13:01:39] [INFO] Accepted connection from client socket: 6
+[2025-01-08 13:01:39] [INFO] Handling client socket: 6
+[2025-01-08 13:01:39] [INFO] Received query from client 6: facebook.com
+[2025-01-08 13:01:39] [INFO] Domain not found for query: facebook.com
+[2025-01-08 13:01:44] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 13:03:24] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 13:03:24] [ERROR] Bind failed
+[2025-01-08 13:07:04] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 13:07:04] [INFO] Server is listening on port 8081
+[2025-01-08 13:07:12] [INFO] Accepted connection from client socket: 6
+[2025-01-08 13:07:12] [INFO] Handling client socket: 6
+[2025-01-08 13:07:12] [INFO] Received query from client 6: facebook.com
+[2025-01-08 13:07:12] [INFO] Domain not found for query: facebook.com
+[2025-01-08 13:07:17] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 13:14:38] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 13:14:38] [INFO] Server is listening on port 8081
+[2025-01-08 13:14:42] [INFO] Accepted connection from client socket: 6
+[2025-01-08 13:14:42] [INFO] Handling client socket: 6
+[2025-01-08 13:14:42] [INFO] Received query from client 6: facebook.com
+[2025-01-08 13:14:42] [INFO] Domain not found for query: facebook.com
+[2025-01-08 13:14:42] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 13:15:15] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 13:15:15] [ERROR] Bind failed
+[2025-01-08 14:40:49] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 14:40:49] [INFO] Server is listening on port 8081
+[2025-01-08 14:40:52] [INFO] Accepted connection from client socket: 6
+[2025-01-08 14:40:52] [INFO] Handling client socket: 6
+[2025-01-08 14:40:52] [INFO] Received query from client 6: facebook.com
+[2025-01-08 14:40:52] [INFO] Domain not found for query: facebook.com
+[2025-01-08 14:40:52] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 19:25:47] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:25:47] [INFO] Server is listening on port 8081
+[2025-01-08 19:25:54] [INFO] Accepted connection from client socket: 6
+[2025-01-08 19:25:54] [INFO] Handling client socket: 6
+[2025-01-08 19:25:54] [INFO] Received query from client 6: facebook.com
+[2025-01-08 19:25:54] [INFO] Domain not found for query: facebook.com
+[2025-01-08 19:25:54] [INFO] Finished forwarding query. Received: (null)
+[2025-01-08 19:34:17] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:34:17] [INFO] Server is listening on port 8081
+[2025-01-08 19:34:20] [INFO] Accepted connection from client socket: 6
+[2025-01-08 19:34:20] [INFO] Handling client socket: 6
+[2025-01-08 19:34:20] [INFO] Received query from client 6: facebook.com
+[2025-01-08 19:34:20] [INFO] Domain not found for query: facebook.com
+[2025-01-08 19:44:45] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:44:45] [ERROR] Bind failed
+[2025-01-08 19:47:35] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:47:35] [INFO] Server is listening on port 8081
+[2025-01-08 19:47:39] [INFO] Accepted connection from client socket: 6
+[2025-01-08 19:47:39] [INFO] Handling client socket: 6
+[2025-01-08 19:47:39] [INFO] Received query from client 6: facebook.com
+[2025-01-08 19:47:39] [INFO] Domain not found for query: facebook.com
+[2025-01-08 19:47:39] [INFO] Finished forwarding query. Received: 
+[2025-01-08 19:50:41] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 19:50:41] [INFO] Sent response to client 6: 
+[2025-01-08 19:50:41] [INFO] Closed connection for client socket: 6
+[2025-01-08 19:51:52] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:51:52] [INFO] Server is listening on port 8081
+[2025-01-08 19:51:55] [INFO] Accepted connection from client socket: 6
+[2025-01-08 19:51:55] [INFO] Handling client socket: 6
+[2025-01-08 19:51:55] [INFO] Received query from client 6: facebook.com
+[2025-01-08 19:51:55] [INFO] Domain not found for query: facebook.com
+[2025-01-08 19:51:55] [INFO] Finished forwarding query. Received: 
+[2025-01-08 19:51:55] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 19:51:55] [INFO] Sent response to client 6: 
+[2025-01-08 19:51:55] [INFO] Closed connection for client socket: 6
+[2025-01-08 19:52:08] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:52:08] [ERROR] Bind failed
+[2025-01-08 19:52:17] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:52:17] [ERROR] Bind failed
+[2025-01-08 19:52:20] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:52:20] [ERROR] Bind failed
+[2025-01-08 19:54:46] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 19:54:46] [INFO] Server is listening on port 8081
+[2025-01-08 19:54:48] [INFO] Accepted connection from client socket: 6
+[2025-01-08 19:54:48] [INFO] Handling client socket: 6
+[2025-01-08 19:54:48] [INFO] Received query from client 6: facebook.com
+[2025-01-08 19:54:48] [INFO] Domain not found for query: facebook.com
+[2025-01-08 19:54:48] [INFO] Finished forwarding query. Received: 
+[2025-01-08 19:54:48] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 19:54:48] [INFO] Sent response to client 6: 
+[2025-01-08 19:54:48] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:03:58] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:03:58] [INFO] Server is listening on port 8081
+[2025-01-08 20:04:16] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:04:16] [INFO] Handling client socket: 6
+[2025-01-08 20:04:16] [INFO] Received query from client 6: facebook.com
+[2025-01-08 20:04:16] [INFO] Domain not found for query: facebook.com
+[2025-01-08 20:04:16] [INFO] Finished forwarding query. Received: 
+[2025-01-08 20:04:16] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 20:04:16] [INFO] Sent response to client 6: 
+[2025-01-08 20:04:16] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:09:45] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:09:45] [INFO] Server is listening on port 8081
+[2025-01-08 20:10:11] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:10:11] [INFO] Shutting down DNS server
+[2025-01-08 20:15:14] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:15:14] [INFO] Server is listening on port 8081
+[2025-01-08 20:15:17] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:15:17] [INFO] Handling client socket: 6
+[2025-01-08 20:15:17] [INFO] Received query from client 6: facebook.com
+[2025-01-08 20:15:17] [INFO] Domain not found for query: facebook.com
+[2025-01-08 20:15:17] [INFO] Finished forwarding query. Received: 185.60.218.35
+[2025-01-08 20:15:17] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 20:15:17] [INFO] Sent response to client 6: 185.60.218.35
+[2025-01-08 20:15:17] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:15:57] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:15:57] [INFO] Shutting down DNS server
+[2025-01-08 20:21:44] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:21:44] [INFO] Server is listening on port 8081
+[2025-01-08 20:21:51] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:21:51] [INFO] Handling client socket: 6
+[2025-01-08 20:21:51] [INFO] Received query from client 6: facebook.com
+[2025-01-08 20:21:51] [INFO] Domain not found for query: facebook.com
+[2025-01-08 20:21:51] [INFO] Finished forwarding query. Received: 185.60.218.35
+[2025-01-08 20:21:51] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 20:21:51] [INFO] Sent response to client 6: 185.60.218.35
+[2025-01-08 20:21:51] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:22:29] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:22:29] [INFO] Shutting down DNS server
+[2025-01-08 20:23:08] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:23:08] [INFO] Server is listening on port 8081
+[2025-01-08 20:23:11] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:23:11] [INFO] Handling client socket: 6
+[2025-01-08 20:23:11] [INFO] Received query from client 6: discord.com
+[2025-01-08 20:23:11] [INFO] Domain not found for query: discord.com
+[2025-01-08 20:23:11] [INFO] Finished forwarding query. Received: 162.159.136.232
+[2025-01-08 20:23:11] [INFO] Added forwarded query result to cache: discord.com
+[2025-01-08 20:23:11] [INFO] Sent response to client 6: 162.159.136.232
+[2025-01-08 20:23:11] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:23:21] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:23:21] [INFO] Shutting down DNS server

@@ -138,3 +138,23 @@ void printDNSCache(struct DNSCache* cache) {
     }
     printf("--------------------------\n");
 }
+
+// create new cache entry filled with relevant data
+struct CacheEntry* dns_createNewEntry(const char* domain_name, 
+                                     const char* ip_address)
+{
+    struct CacheEntry* cache_entry = (struct CacheEntry*)malloc(sizeof(struct CacheEntry));
+
+    cache_entry->domain_name = (char*)malloc((strlen(domain_name) + 1) * sizeof(char));
+    strcpy(cache_entry->domain_name, domain_name);
+
+    cache_entry->record_value = (char*)malloc((strlen(ip_address) + 1) * sizeof(char));
+    strcpy(cache_entry->record_value, ip_address);
+
+    // These will be set when the entry is added to the cache list
+    cache_entry->next = NULL;
+    cache_entry->timestamp = 0;
+    cache_entry->ttl = 0;
+
+    return cache_entry;
+}
