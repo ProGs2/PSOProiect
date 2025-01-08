@@ -133,10 +133,14 @@ void handleClient(void* arg) {
         // [Insert functions to forward and load into cache HERE]
         char ip_address[INET_ADDRSTR_LEN] = {0};
         dns_query_domain(buffer, "1.1.1.1", 53, handle_dns_response, &ip_address);
-        logMessage(context->logger, "INFO", "Finished forwarding query. Received: %s", ip_address);
-        cache_entry = dns_createNewEntry(buffer, ip_address);
-        addCacheEntry(context->cache, cache_entry);
-        logMessage(context->logger, "INFO", "Added forwarded query result to cache: %s", buffer);
+        logMessage(context->logger, "INFO", "Query for %s was successfuly forwarded.", buffer);
+        if(ip_address[0] != '\0') {
+            cache_entry = dns_createNewEntry(buffer, ip_address);
+            addCacheEntry(context->cache, cache_entry);
+            logMessage(context->logger, "INFO", "Added forwarded query result to cache: %s", ip_address);
+        } else {
+            logMessage(context->logger, "INFO", "Forwarding failed to return result.");
+        }
     }
 
     // Prepare the response
@@ -144,9 +148,7 @@ void handleClient(void* arg) {
     if (cache_entry && cache_entry->record_value) {
         response = cache_entry->record_value;
     } else {
-        // OLD!! response = "Record not found";
-        // Will need to handle case where, even after forwarding, there is no response
-        printf("todo\n");
+        response = "Record not found";
     }
 
     // Send the response back to the client

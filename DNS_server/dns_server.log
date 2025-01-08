@@ -717,3 +717,89 @@
 [2025-01-08 20:23:11] [INFO] Closed connection for client socket: 6
 [2025-01-08 20:23:21] [INFO] Accepted connection from client socket: 6
 [2025-01-08 20:23:21] [INFO] Shutting down DNS server
+[2025-01-08 20:45:12] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 20:45:12] [INFO] Server is listening on port 8081
+[2025-01-08 20:45:19] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:45:19] [INFO] Handling client socket: 6
+[2025-01-08 20:45:19] [INFO] Received query from client 6: facebook.com
+[2025-01-08 20:45:19] [INFO] Domain not found for query: facebook.com
+[2025-01-08 20:45:19] [INFO] Finished forwarding query. Received: 157.240.0.35
+[2025-01-08 20:45:19] [INFO] Added forwarded query result to cache: facebook.com
+[2025-01-08 20:45:19] [INFO] Sent response to client 6: 157.240.0.35
+[2025-01-08 20:45:19] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:45:26] [INFO] Accepted connection from client socket: 7
+[2025-01-08 20:45:26] [INFO] Handling client socket: 7
+[2025-01-08 20:45:26] [INFO] Received query from client 7: discord.com
+[2025-01-08 20:45:26] [INFO] Domain not found for query: discord.com
+[2025-01-08 20:45:26] [INFO] Finished forwarding query. Received: 162.159.136.232
+[2025-01-08 20:45:26] [INFO] Added forwarded query result to cache: discord.com
+[2025-01-08 20:45:26] [INFO] Sent response to client 7: 162.159.136.232
+[2025-01-08 20:45:26] [INFO] Closed connection for client socket: 7
+[2025-01-08 20:45:28] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:45:28] [INFO] Handling client socket: 6
+[2025-01-08 20:45:28] [INFO] Received query from client 6: discord.com
+[2025-01-08 20:45:28] [INFO] Cache/Trie hit for query discord.com -> 162.159.136.232
+[2025-01-08 20:45:28] [INFO] Added query result to cache: discord.com
+[2025-01-08 20:45:28] [INFO] Sent response to client 6: 162.159.136.232
+[2025-01-08 20:45:28] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:46:00] [INFO] Accepted connection from client socket: 7
+[2025-01-08 20:46:00] [INFO] Handling client socket: 7
+[2025-01-08 20:46:00] [INFO] Received query from client 7: youtube.com
+[2025-01-08 20:46:00] [INFO] Domain not found for query: youtube.com
+[2025-01-08 20:46:00] [INFO] Finished forwarding query. Received: 142.250.187.110
+[2025-01-08 20:46:00] [INFO] Added forwarded query result to cache: youtube.com
+[2025-01-08 20:46:00] [INFO] Sent response to client 7: 142.250.187.110
+[2025-01-08 20:46:00] [INFO] Closed connection for client socket: 7
+[2025-01-08 20:46:08] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:46:08] [INFO] Handling client socket: 6
+[2025-01-08 20:46:08] [INFO] Received query from client 6: factorio.com
+[2025-01-08 20:46:08] [INFO] Domain not found for query: factorio.com
+[2025-01-08 20:46:08] [INFO] Finished forwarding query. Received: 172.67.71.197
+[2025-01-08 20:46:08] [INFO] Added forwarded query result to cache: factorio.com
+[2025-01-08 20:46:08] [INFO] Sent response to client 6: 172.67.71.197
+[2025-01-08 20:46:08] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:46:18] [INFO] Accepted connection from client socket: 7
+[2025-01-08 20:46:18] [INFO] Handling client socket: 7
+[2025-01-08 20:46:18] [INFO] Received query from client 7: test.test
+[2025-01-08 20:46:18] [INFO] Domain not found for query: test.test
+[2025-01-08 20:46:18] [INFO] Finished forwarding query. Received: 
+[2025-01-08 20:46:18] [INFO] Added forwarded query result to cache: test.test
+[2025-01-08 20:46:18] [INFO] Sent response to client 7: 
+[2025-01-08 20:46:18] [INFO] Closed connection for client socket: 7
+[2025-01-08 20:46:32] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:46:32] [INFO] Handling client socket: 6
+[2025-01-08 20:46:32] [INFO] Received query from client 6: test.test
+[2025-01-08 20:46:32] [INFO] Cache/Trie hit for query test.test -> 
+[2025-01-08 20:46:32] [INFO] Added query result to cache: test.test
+[2025-01-08 20:46:32] [INFO] Sent response to client 6: 
+[2025-01-08 20:46:32] [INFO] Closed connection for client socket: 6
+[2025-01-08 20:46:43] [INFO] Accepted connection from client socket: 6
+[2025-01-08 20:46:43] [INFO] Shutting down DNS server
+[2025-01-08 21:28:09] [INFO] DNS server initialized. Listening on port 8081
+[2025-01-08 21:28:09] [INFO] Server is listening on port 8081
+[2025-01-08 21:28:11] [INFO] Accepted connection from client socket: 6
+[2025-01-08 21:28:11] [INFO] Handling client socket: 6
+[2025-01-08 21:28:11] [INFO] Received query from client 6: facebook.com
+[2025-01-08 21:28:11] [INFO] Domain not found for query: facebook.com
+[2025-01-08 21:28:11] [INFO] Query for facebook.com was successfuly forwarded.
+[2025-01-08 21:28:11] [INFO] Added forwarded query result to cache: 157.240.0.35
+[2025-01-08 21:28:11] [INFO] Sent response to client 6: 157.240.0.35
+[2025-01-08 21:28:11] [INFO] Closed connection for client socket: 6
+[2025-01-08 21:28:16] [INFO] Accepted connection from client socket: 7
+[2025-01-08 21:28:16] [INFO] Handling client socket: 7
+[2025-01-08 21:28:16] [INFO] Received query from client 7: discord.com
+[2025-01-08 21:28:16] [INFO] Domain not found for query: discord.com
+[2025-01-08 21:28:16] [INFO] Query for discord.com was successfuly forwarded.
+[2025-01-08 21:28:16] [INFO] Added forwarded query result to cache: 162.159.137.232
+[2025-01-08 21:28:16] [INFO] Sent response to client 7: 162.159.137.232
+[2025-01-08 21:28:16] [INFO] Closed connection for client socket: 7
+[2025-01-08 21:28:20] [INFO] Accepted connection from client socket: 6
+[2025-01-08 21:28:20] [INFO] Handling client socket: 6
+[2025-01-08 21:28:20] [INFO] Received query from client 6: test.test
+[2025-01-08 21:28:20] [INFO] Domain not found for query: test.test
+[2025-01-08 21:28:20] [INFO] Query for test.test was successfuly forwarded.
+[2025-01-08 21:28:20] [INFO] Forwarding failed to return result.
+[2025-01-08 21:28:20] [INFO] Sent response to client 6: Record not found
+[2025-01-08 21:28:20] [INFO] Closed connection for client socket: 6
+[2025-01-08 21:28:41] [INFO] Accepted connection from client socket: 6
+[2025-01-08 21:28:41] [INFO] Shutting down DNS server
