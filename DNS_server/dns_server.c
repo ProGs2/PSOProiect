@@ -495,7 +495,7 @@ int dns_query_domain(const char* domain_name,
                     void* user_data)
 {
     // create UDP socket specifically for this query
-    // this is necessary since the server in mainDNS doesn't listen to DNS ports
+    // this is necessary since the server in mainDNS uses TCP
     int query_socket = socket(AF_INET, SOCK_DGRAM, 0);
     if (query_socket < 0) {
         perror("Failed to create query socket");
