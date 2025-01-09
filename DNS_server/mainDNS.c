@@ -114,13 +114,13 @@ void handleClient(void* arg) {
 
     // CacheEntry object is created ONLY if the qname is found within the tree/cache
     // If retrieveValue can't find the requested domain name, it returns NULL
-    // With this in mind, I do not need to use cache_entry in the forwarding handler
+    // This means I need to create cache_entry at a later point
     struct CacheEntry* cache_entry = retriveValue(context->root, buffer, context->cache);
 
     if (cache_entry) {
         logMessage(context->logger, "INFO", "Cache/Trie hit for query %s -> %s", buffer, cache_entry->record_value);
     } else {
-        logMessage(context->logger, "INFO", "Domain not found for query: %s", buffer);
+        logMessage(context->logger, "INFO", "Domain not found in local server: %s", buffer);
     }
 
     if (cache_entry) {
@@ -129,8 +129,6 @@ void handleClient(void* arg) {
     } else {
         // If program enters here, it means that the requested domain name does not exist locally and must be obtained
         // through forwarding.
-        // Forwarding handler will receive buffer (== domain_name)
-        // [Insert functions to forward and load into cache HERE]
         char ip_address[INET_ADDRSTR_LEN] = {0};
         dns_query_domain(buffer, "1.1.1.1", 53, handle_dns_response, &ip_address);
         logMessage(context->logger, "INFO", "Query for %s was successfuly forwarded.", buffer);
@@ -262,7 +260,6 @@ int main() {
     }
 
     // Cleanup
-    // never reached. needs a way to exit the previus infinite loop
     logMessage(logger, "INFO", "Shutting down DNS server");
     destroyLogger(logger);
     destroyThreadPool(pool);

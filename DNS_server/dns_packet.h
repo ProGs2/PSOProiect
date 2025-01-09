@@ -23,12 +23,11 @@
 #define DNS_TYPE_PTR 12   	/* domain name pointer */
 #define DNS_TYPE_MX 15    	/* mail exchange */
 #define DNS_TYPE_TXT 16   	/* text strings */
-#define DNS_TYPE_AAAA 28  	/* ipv6 host address */
 
 #define DNS_CLASS_IN 1    /* dns internet class */
 
 struct dns_header {
-    uint16_t id;      /* query identification number */
+    uint16_t id;      /* query id */
     #if __BYTE_ORDER == __LITTLE_ENDIAN
     uint16_t rd:1;    /* recursion desired */
     uint16_t tc:1;    /* truncated message */
@@ -102,9 +101,5 @@ size_t util_measure_name(const void *data, uint16_t offset);
 int dns_read_name(char *dest, const void *data, uint16_t offset, size_t max_len);
 struct dns_packet* dns_create_query_packet(const void* in_qname);
 void dns_free_packet(struct dns_packet* packet);
-
-/* debug */
-int debug_dns_request_parse(struct dns_packet* pkt, const void* data);
-void debug_dns_print_raw_packet(const uint8_t* buffer, size_t length);
 
 #endif

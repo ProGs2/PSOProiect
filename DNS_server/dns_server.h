@@ -9,8 +9,8 @@
 
 /* callback function type for packet processing */
 // a callback function is any function that receives the packet from the network and processes it.
-// since the program already parses the packet before this function is called, all that's left is to call a function that would, 
-// for example, take the query data and search it in the dns tree to formulate a response.
+// since the program already parses the packet before this function is called, all that's left is to 
+// call a function that would, for example, take the query data and search it in the dns tree to create a response.
 
 typedef void (*dns_callback_fn) (struct dns_packet *packet, 
                                 struct sockaddr_in *sender, 
